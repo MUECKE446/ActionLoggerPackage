@@ -39,7 +39,7 @@ log.verbose("this message is generated in ViewController")
 ActionLogger.info("here is an info for you")
 ```
 
-![alt tag]((https://cloud.githubusercontent.com/assets/6715559/11776476/bfbf64d2-a247-11e5-8673-55b9027fa6f2.png)
+![alt tag](https://cloud.githubusercontent.com/assets/6715559/11776753/f29b0af8-a249-11e5-983a-ffb788dc4892.png)
 
 As the above example shows, it's even easier: all outputs can also be done via class methods. Step 2 of this procedure could also be left out! If you will use the class methods used internally also the default logger automatically generated.
 
