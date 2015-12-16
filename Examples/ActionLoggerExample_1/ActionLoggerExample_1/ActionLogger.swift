@@ -1,6 +1,5 @@
 //
-//  ActionLoggerComplete.swift
-//  ActionLogger-Swift
+//  ActionLogger.swift
 //
 //  Created by Christian Muth on 12.04.15.
 //  Copyright (c) 2015 Christian Muth. All rights reserved.
@@ -15,7 +14,7 @@ import Foundation
     import UIKit
 #endif
 
-// Version see at the begin of class ActionLogger !!!
+// Version see at the begin of class ActionLogger
 
 
 // MARK: - ActionLogDetails
@@ -81,39 +80,19 @@ public class ActionLogger : CustomDebugStringConvertible {
     }
     
     // MARK: - Version
-/**
-    bei
-    Veränderung der Schnittstelle                       X
-    Starker Veränderung der Funktionalität				X
-    
-    Erweiterung der Funktionalität (alte bleibt aber erhalten)	Y
-    Veränderung der Funktionalität wegen Bug Fixing               Y
-    
-    Veränderung des internen Codes ohne die Funktionalität
-    zu verändern (CodeLifting, interne Schönheit)			Z
-    
-    X	die verwendenden Applikationen müssen hinsichtlich der vorgenommenen Veränderungen oder auf Grund der geänderten Schnittstellen hin untersucht werden.
-    
-    Y	Veränderungen in Applikation überprüfen
-    
-    Z	nur Austausch der Datei ActionLoggerComplete.swift nötig
-*/
-
-    /// the ActionLogger Version X.Y.Z as String
-    public let ActionLoggerVersion: String = "1.0.0"
     let integerCharSet = NSCharacterSet(charactersInString: "+-0123456789")
     
     // read only computed properties
     /// most importent number of version **X**.Y.Z
     public var ActionLoggerVersionX: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         return scanner.scanInteger()!
     }
     
     /// middle number of version X.**Y**.Z
     public var ActionLoggerVersionY: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
@@ -122,7 +101,7 @@ public class ActionLogger : CustomDebugStringConvertible {
     
     /// least importent number of version X.Y.**Z**
     public var ActionLoggerVersionZ: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
@@ -137,7 +116,26 @@ public class ActionLogger : CustomDebugStringConvertible {
         static let defaultLoggerIdentifier = "de.muecke-software.ActionLogger.defaultLogger"
         static let baseConsoleDestinationIdentifier = "de.muecke-software.ActionLogger.logdestination.console"
         static let logQueueIdentifier = "de.muecke-software.ActionLogger.queue"
-        static let versionString = "1.0"
+        /**
+         bei
+         Veränderung der Schnittstelle                       X
+         Starker Veränderung der Funktionalität				X
+         
+         Erweiterung der Funktionalität (alte bleibt aber erhalten)	Y
+         Veränderung der Funktionalität wegen Bug Fixing               Y
+         
+         Veränderung des internen Codes ohne die Funktionalität
+         zu verändern (CodeLifting, interne Schönheit)			Z
+         
+         X	die verwendenden Applikationen müssen hinsichtlich der vorgenommenen Veränderungen oder auf Grund der geänderten Schnittstellen hin untersucht werden.
+         
+         Y	Veränderungen in Applikation überprüfen
+         
+         Z	nur Austausch der Datei ActionLogger.swift nötig
+         
+         ** !!! Achtung: die Version als String befindet sich bei constants! **
+         */
+        static let ActionLoggerVersion: String = "1.0.0"
     }
     
     struct statics {
@@ -145,7 +143,6 @@ public class ActionLogger : CustomDebugStringConvertible {
         static let defaultLogger: ActionLogger! = ActionLogger(identifier:ActionLogger.constants.defaultLoggerIdentifier)
         static var logQueue = dispatch_queue_create(ActionLogger.constants.logQueueIdentifier, nil)
         static let standardLogConsoleDestination: ActionLogDestinationColorProtocol =  ActionLogConsoleDestination(identifier: ActionLogger.constants.baseConsoleDestinationIdentifier)
-        
     }
     
     public var dateFormatter: NSDateFormatter
@@ -442,7 +439,7 @@ public class ActionLogger : CustomDebugStringConvertible {
    public func logSetupValues() {
         // log the setup values
         var message =   "setupValues for ActionLogger object\n" +
-            "ActionLogger Version: \(constants.versionString)\n" +
+            "ActionLogger Version: \(constants.ActionLoggerVersion)\n" +
             "Identifier          : \(identifier)\n" +
             "outputLogLevel      : \(outputLogLevel.description())\n" +
             "with logDestinations:\n"
@@ -822,7 +819,7 @@ public func preProcessLogDetails(logDetails: ActionLogDetails, showDateAndTime: 
 }
 
 // MARK: - ActionLogConsoleDestination
-// - A standard log destination that outputs log details to the console
+/// - A standard log destination that outputs log details to the console
 public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, CustomDebugStringConvertible {
     //    var owner: ActionLogger
     public var identifier: String
@@ -941,7 +938,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
     // MARK: - DebugPrintable
     public var debugDescription: String {
         get {
-            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber)"
+            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
         }
     }
     
@@ -1040,7 +1037,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
 }
 
 // MARK: - ActionLogFileDestination
-// - A standard log destination that outputs log details to a file
+/// - A standard log destination that outputs log details to a file
 public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugStringConvertible {
     //    var owner: ActionLogger
     public var identifier: String = ""
@@ -1196,7 +1193,7 @@ public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebu
     // MARK: - DebugPrintable
     public var debugDescription: String {
         get {
-            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber)"
+            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
         }
     }
 }
