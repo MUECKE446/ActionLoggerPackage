@@ -1,6 +1,5 @@
 //
-//  ActionLoggerComplete.swift
-//  ActionLogger-Swift
+//  ActionLogger.swift
 //
 //  Created by Christian Muth on 12.04.15.
 //  Copyright (c) 2015 Christian Muth. All rights reserved.
@@ -15,7 +14,7 @@ import Foundation
     import UIKit
 #endif
 
-// Version see at the begin of class ActionLogger !!!
+// Version see at the begin of class ActionLogger
 
 
 // MARK: - ActionLogDetails
@@ -65,40 +64,35 @@ public struct ActionLogDetails {
 // - The main logging class
 public class ActionLogger : CustomDebugStringConvertible {
     
+    // MARK: - class wide vars
+    public class var dateFormatterGER: NSDateFormatter {
+        let formatter = NSDateFormatter()
+        formatter.locale =  NSLocale.currentLocale()
+        formatter.dateFormat = "dd-MM-yyyy HH:mm:ss.SSS"
+        return formatter
+    }
+    
+    public class var dateFormatterUSA: NSDateFormatter {
+        let formatter = NSDateFormatter()
+        formatter.locale =  NSLocale.currentLocale()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        return formatter
+    }
+    
     // MARK: - Version
-/**
-    bei
-    Veränderung der Schnittstelle                       X
-    Starker Veränderung der Funktionalität				X
-    
-    Erweiterung der Funktionalität (alte bleibt aber erhalten)	Y
-    Veränderung der Funktionalität wegen Bug Fixing               Y
-    
-    Veränderung des internen Codes ohne die Funktionalität
-    zu verändern (CodeLifting, interne Schönheit)			Z
-    
-    X	die verwendenden Applikationen müssen hinsichtlich der vorgenommenen Veränderungen oder auf Grund der geänderten Schnittstellen hin untersucht werden.
-    
-    Y	Veränderungen in Applikation überprüfen
-    
-    Z	nur Austausch der Datei ActionLoggerComplete.swift nötig
-*/
-
-    /// the ActionLogger Version X.Y.Z as String
-    public let ActionLoggerVersion: String = "1.0.0"
     let integerCharSet = NSCharacterSet(charactersInString: "+-0123456789")
     
     // read only computed properties
     /// most importent number of version **X**.Y.Z
     public var ActionLoggerVersionX: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         return scanner.scanInteger()!
     }
     
     /// middle number of version X.**Y**.Z
     public var ActionLoggerVersionY: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
@@ -107,7 +101,7 @@ public class ActionLogger : CustomDebugStringConvertible {
     
     /// least importent number of version X.Y.**Z**
     public var ActionLoggerVersionZ: Int {
-        let scanner = NSScanner(string: ActionLoggerVersion)
+        let scanner = NSScanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
@@ -122,7 +116,26 @@ public class ActionLogger : CustomDebugStringConvertible {
         static let defaultLoggerIdentifier = "de.muecke-software.ActionLogger.defaultLogger"
         static let baseConsoleDestinationIdentifier = "de.muecke-software.ActionLogger.logdestination.console"
         static let logQueueIdentifier = "de.muecke-software.ActionLogger.queue"
-        static let versionString = "1.0"
+        /**
+         bei
+         Veränderung der Schnittstelle                       X
+         Starker Veränderung der Funktionalität				X
+         
+         Erweiterung der Funktionalität (alte bleibt aber erhalten)	Y
+         Veränderung der Funktionalität wegen Bug Fixing               Y
+         
+         Veränderung des internen Codes ohne die Funktionalität
+         zu verändern (CodeLifting, interne Schönheit)			Z
+         
+         X	die verwendenden Applikationen müssen hinsichtlich der vorgenommenen Veränderungen oder auf Grund der geänderten Schnittstellen hin untersucht werden.
+         
+         Y	Veränderungen in Applikation überprüfen
+         
+         Z	nur Austausch der Datei ActionLogger.swift nötig
+         
+         ** !!! Achtung: die Version als String befindet sich bei constants! **
+         */
+        static let ActionLoggerVersion: String = "1.0.0"
     }
     
     struct statics {
@@ -130,16 +143,9 @@ public class ActionLogger : CustomDebugStringConvertible {
         static let defaultLogger: ActionLogger! = ActionLogger(identifier:ActionLogger.constants.defaultLoggerIdentifier)
         static var logQueue = dispatch_queue_create(ActionLogger.constants.logQueueIdentifier, nil)
         static let standardLogConsoleDestination: ActionLogDestinationColorProtocol =  ActionLogConsoleDestination(identifier: ActionLogger.constants.baseConsoleDestinationIdentifier)
-        
     }
     
-    class var dateFormatter: NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.locale =  NSLocale.currentLocale()
-        //formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        formatter.dateFormat = "dd-MM-yyyy HH:mm:ss.SSS"
-        return formatter
-    }
+    public var dateFormatter: NSDateFormatter
     
     // MARK: - Enums
     public enum LogLevel: Int, Comparable {
@@ -203,6 +209,7 @@ public class ActionLogger : CustomDebugStringConvertible {
     
     // MARK: - initializer
     init?(id: String, withStandardConsole: Bool = true) {
+        self.dateFormatter = ActionLogger.dateFormatterGER
         self.identifier = id
         if let _ = statics.loggerDict[identifier] {
             ActionLogger.defaultLogger().error("unable to initialize ActionLogger instance with identifier: \"\(identifier)\" allways exists")
@@ -264,11 +271,11 @@ public class ActionLogger : CustomDebugStringConvertible {
     }
     
     // MARK: - Setup methods
-    public class func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, writeToFile: AnyObject? = nil) {
-        defaultLogger().setup(logLevel, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, writeToFile: writeToFile)
+    public class func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
+        defaultLogger().setup(logLevel, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, dateFormatter: dateFormatter, writeToFile: writeToFile)
     }
     
-    public func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, writeToFile: AnyObject? = nil) {
+    public func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
         outputLogLevel = logLevel;
         
         if let unwrappedWriteToFile : AnyObject = writeToFile {
@@ -290,6 +297,7 @@ public class ActionLogger : CustomDebugStringConvertible {
                 (logDestination as! ActionLogConsoleDestination).showFileName = showFileName
                 (logDestination as! ActionLogConsoleDestination).showLineNumber = showLineNumber
                 (logDestination as! ActionLogConsoleDestination).showFuncName = showFuncName
+                (logDestination as! ActionLogConsoleDestination).dateFormatter = dateFormatter
                 continue
             }
             if logDestination is ActionLogFileDestination {
@@ -299,6 +307,7 @@ public class ActionLogger : CustomDebugStringConvertible {
                 (logDestination as! ActionLogFileDestination).showFileName = showFileName
                 (logDestination as! ActionLogFileDestination).showLineNumber = showLineNumber
                 (logDestination as! ActionLogFileDestination).showFuncName = showFuncName
+                (logDestination as! ActionLogFileDestination).dateFormatter = dateFormatter
                 continue
             }
         }
@@ -409,10 +418,28 @@ public class ActionLogger : CustomDebugStringConvertible {
         }
     }
     
-    public func logSetupValues() {
+    
+    public class func setupDateFormatter(dateFormatter: NSDateFormatter) {
+        defaultLogger().setupDateFormatter(dateFormatter)
+    }
+    
+    public func setupDateFormatter(dateFormatter: NSDateFormatter) {
+        for logDestination in logDestinations {
+            if logDestination is ActionLogConsoleDestination {
+                (logDestination as! ActionLogConsoleDestination).dateFormatter = dateFormatter
+                continue
+            }
+            if logDestination is ActionLogFileDestination {
+                (logDestination as! ActionLogFileDestination).dateFormatter = dateFormatter
+                continue
+            }
+        }
+    }
+    
+   public func logSetupValues() {
         // log the setup values
         var message =   "setupValues for ActionLogger object\n" +
-            "ActionLogger Version: \(constants.versionString)\n" +
+            "ActionLogger Version: \(constants.ActionLoggerVersion)\n" +
             "Identifier          : \(identifier)\n" +
             "outputLogLevel      : \(outputLogLevel.description())\n" +
             "with logDestinations:\n"
@@ -427,7 +454,8 @@ public class ActionLogger : CustomDebugStringConvertible {
                 "showLogLevel          : \(logDestination.showLogLevel)\n" +
                 "showFileName          : \(logDestination.showFileName)\n" +
                 "showLineNumber        : \(logDestination.showLineNumber)\n" +
-                "showFuncName          : \(logDestination.showFuncName)\n"
+                "showFuncName          : \(logDestination.showFuncName)\n" +
+                "date & time format    : \(logDestination.dateFormatter.dateFormat)\n"
             
             if logDestination.hasFile() {
                 message +=
@@ -745,6 +773,7 @@ public protocol ActionLogDestinationProtocol: CustomDebugStringConvertible {
     var showFileName: Bool {get set}
     var showLineNumber: Bool {get set}
     var showFuncName: Bool {get set}
+    var dateFormatter: NSDateFormatter {get set}
     
     func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool)
     func isEnabledForLogLevel(logLevel: ActionLogger.LogLevel) -> Bool
@@ -754,7 +783,8 @@ public protocol ActionLogDestinationProtocol: CustomDebugStringConvertible {
 }
 
 // MARK: - common functions
-public func preProcessLogDetails(logDetails: ActionLogDetails, showDateAndTime: Bool, showLogLevel: Bool, showFileName: Bool, showLineNumber: Bool, showFuncName: Bool, dateFormatter:  NSDateFormatter = ActionLogger.dateFormatter, withFileLineFunctionInfo: Bool = true) -> String {
+public func preProcessLogDetails(logDetails: ActionLogDetails, showDateAndTime: Bool, showLogLevel: Bool, showFileName: Bool, showLineNumber: Bool, showFuncName: Bool, dateFormatter: NSDateFormatter,
+    withFileLineFunctionInfo: Bool = true) -> String {
     // create extended details
     var extendedDetails: String = ""
     if showLogLevel && (logDetails.logLevel > .MessageOnly) {
@@ -789,7 +819,7 @@ public func preProcessLogDetails(logDetails: ActionLogDetails, showDateAndTime: 
 }
 
 // MARK: - ActionLogConsoleDestination
-// - A standard log destination that outputs log details to the console
+/// - A standard log destination that outputs log details to the console
 public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, CustomDebugStringConvertible {
     //    var owner: ActionLogger
     public var identifier: String
@@ -799,9 +829,9 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
     public var showFileName: Bool = true
     public var showLineNumber: Bool = true
     public var showFuncName: Bool = true
+    public var dateFormatter = ActionLogger.dateFormatterGER
 
     var outputLogLevel: ActionLogger.LogLevel = .AllLevels
-    var dateFormatter = ActionLogger.dateFormatter
     
     // color enhancement
     var colorProfiles = Dictionary<ActionLogger.LogLevel,ActionLogColorProfile>()
@@ -871,7 +901,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
     }
     
     public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true) {
-        var fullLogMessage = preProcessLogDetails(logDetails, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, withFileLineFunctionInfo: withFileLineFunctionInfo)
+        var fullLogMessage = preProcessLogDetails(logDetails, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, dateFormatter: dateFormatter, withFileLineFunctionInfo: withFileLineFunctionInfo)
         
         // color enhancement
         if let cp = self.colorProfiles[logDetails.logLevel] {
@@ -908,7 +938,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
     // MARK: - DebugPrintable
     public var debugDescription: String {
         get {
-            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber)"
+            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
         }
     }
     
@@ -1007,7 +1037,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationColorProtocol, Cu
 }
 
 // MARK: - ActionLogFileDestination
-// - A standard log destination that outputs log details to a file
+/// - A standard log destination that outputs log details to a file
 public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugStringConvertible {
     //    var owner: ActionLogger
     public var identifier: String = ""
@@ -1017,9 +1047,9 @@ public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebu
     public var showFileName: Bool = true
     public var showLineNumber: Bool = true
     public var showFuncName: Bool = true
+    public var dateFormatter = ActionLogger.dateFormatterGER
     
     var outputLogLevel: ActionLogger.LogLevel = .AllLevels
-    var dateFormatter = ActionLogger.dateFormatter
     
     private var writeToFileURL : NSURL? = nil {
         didSet {
@@ -1065,7 +1095,7 @@ public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebu
     
     // MARK: - Logging methods
     public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true) {
-        let fullLogMessage = preProcessLogDetails(logDetails, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, withFileLineFunctionInfo: withFileLineFunctionInfo)
+        let fullLogMessage = preProcessLogDetails(logDetails, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName,  dateFormatter: dateFormatter, withFileLineFunctionInfo: withFileLineFunctionInfo)
         
         // print it, only if the LogDestination should print this
         if isEnabledForLogLevel(logDetails.logLevel) {
@@ -1163,7 +1193,7 @@ public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebu
     // MARK: - DebugPrintable
     public var debugDescription: String {
         get {
-            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber)"
+            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
         }
     }
 }
