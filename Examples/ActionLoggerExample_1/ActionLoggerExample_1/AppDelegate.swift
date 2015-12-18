@@ -15,7 +15,7 @@ let logger = ActionLogger.defaultLogger()
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
+    var textViewController: ViewController?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
@@ -47,5 +47,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         logger.severe("this is the line for level: Severe")
     }
 
+    @IBAction func generateOutputToTextViewInWindow(sender: NSMenuItem) {
+        if let _ = textViewController {
+            textViewController!.generateOutputToTextViewInWindow()
+        }
+        
+    }
 }
 
