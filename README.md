@@ -3,9 +3,14 @@ All you need for logging
 
 ####Overview:
 
-The Action Logger class sends messages to the Xcode console and / or a file (log). The messages are processed accordingly before they are issued. 
+The Action Logger class sends messages to the Xcode console and / or a file or a NSTextView object (very new!!!). The messages are processed accordingly before they are issued. 
 If the Xcode Plugin XcodeColors is installed, the messages in the Xcode console are displayed in color. 
-The aim of the development was to implement a very easy-to-use method that can be generated with the reports to track program run during software testing. On the other hand has been achieved that through a variety of options, the class can also be used for any other protocol tasks.
+The aim of the development was to implement a very easy-to-use method that can be generated with the reports to track program run during software testing. On the other hand has been achieved that through a variety of options, the class can also be used for any other protocol tasks. 
+See two example outputs
+
+![alt tag](https://cloud.githubusercontent.com/assets/6715559/11895791/a38a1694-a581-11e5-8a0f-b244118d45a2.png)
+
+![alt tag](https://cloud.githubusercontent.com/assets/6715559/11895795/ab8e6598-a581-11e5-8da4-bc2c59592943.png)
 
 ####general description:
 
