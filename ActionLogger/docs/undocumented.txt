@@ -1,0 +1,134 @@
+ActionLogger.swift
+	public class var dateFormatterGER: NSDateFormatter
+	public class var dateFormatterUSA: NSDateFormatter
+	public var dateFormatter: NSDateFormatter
+	public enum LogLevel: Int, Comparable
+	public let identifier: String
+	public var outputLogLevel: LogLevel = .AllLevels
+	public convenience init?()
+	public convenience init?(logFile withLogFile: String)
+	public class func defaultLogger() -> ActionLogger
+	public var debugDescription: String
+	public class func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil)
+	public func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil)
+	public class func setupLogLevel(logLevel: ActionLogger.LogLevel)
+	public func setupLogLevel(logLevel: ActionLogger.LogLevel)
+	public class func setupShowDateAndTime(showDateAndTime: Bool)
+	public func setupShowDateAndTime(showDateAndTime: Bool)
+	public class func setupShowLogLevel(showLogLevel: Bool)
+	public func setupShowLogLevel(showLogLevel: Bool)
+	public class func setupShowFileName(showFileName: Bool)
+	public func setupShowFileName(showFileName: Bool)
+	public class func setupShowLineNumber(showLineNumber: Bool)
+	public func setupShowLineNumber(showLineNumber: Bool)
+	public class func setupShowFuncName(showFuncName: Bool)
+	public func setupShowFuncName(showFuncName: Bool)
+	public class func setupDateFormatter(dateFormatter: NSDateFormatter)
+	public func setupDateFormatter(dateFormatter: NSDateFormatter)
+	public func logSetupValues()
+	public class func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true)
+	public func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true)
+	public class func exec(logLevel: LogLevel = .Debug, closure: () -> () = {})
+	public func exec(logLevel: LogLevel = .Debug, closure: () -> () = {})
+	public class func messageOnly(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func messageOnly(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func comment(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func comment(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func verbose(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func verbose(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func debug(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func debug(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func info(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func info(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func warning(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func warning(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func error(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func error(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func severe(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public func severe(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__)
+	public class func messageOnlyExec(closure: () -> () = {})
+	public func messageOnlyExec(closure: () -> () = {})
+	public class func commentExec(closure: () -> () = {})
+	public func commentExec(closure: () -> () = {})
+	public class func verboseExec(closure: () -> () = {})
+	public func verboseExec(closure: () -> () = {})
+	public class func debugExec(closure: () -> () = {})
+	public func debugExec(closure: () -> () = {})
+	public class func infoExec(closure: () -> () = {})
+	public func infoExec(closure: () -> () = {})
+	public class func warningExec(closure: () -> () = {})
+	public func warningExec(closure: () -> () = {})
+	public class func errorExec(closure: () -> () = {})
+	public func errorExec(closure: () -> () = {})
+	public class func severeExec(closure: () -> () = {})
+	public func severeExec(closure: () -> () = {})
+	public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool
+	public func logDestination(identifier: String) -> ActionLogDestinationProtocol?
+	public func getLogDestinations() -> [ActionLogDestinationProtocol]
+	public func addLogDestination(logDestination: ActionLogDestinationProtocol) -> Bool
+	public func removeLogDestination(logDestination: ActionLogDestinationProtocol)
+	public func removeLogDestination(identifier: String)
+	public func < (lhs:ActionLogger.LogLevel, rhs:ActionLogger.LogLevel) -> Bool
+	public func preProcessLogDetails(logDetails: ActionLogDetails, showDateAndTime: Bool, showLogLevel: Bool, showFileName: Bool, showLineNumber: Bool, showFuncName: Bool, dateFormatter: NSDateFormatter,
+    withFileLineFunctionInfo: Bool = true) -> String
+	var identifier: String {get set}
+	var showDateAndTime: Bool {get set}
+	var showLogLevel: Bool {get set}
+	var showFileName: Bool {get set}
+	var showLineNumber: Bool {get set}
+	var showFuncName: Bool {get set}
+	var dateFormatter: NSDateFormatter {get set}
+	func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool)
+	func isEnabledForLogLevel(logLevel: ActionLogger.LogLevel) -> Bool
+	func hasFile() -> Bool
+	func isEnabledForColor() -> Bool
+	public var identifier: String
+	public var showDateAndTime: Bool = true
+	public var showLogLevel: Bool = true
+	public var showFileName: Bool = true
+	public var showLineNumber: Bool = true
+	public var showFuncName: Bool = true
+	public var dateFormatter = ActionLogger.dateFormatterGER
+	public func setDefaultLogLevelColors()
+	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)
+	public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool
+	public func isEnabledForColor() -> Bool
+	public func hasFile() -> Bool
+	public var debugDescription: String
+	public func setLogColors(foregroundRed fg_red: UInt8 = 0, foregroundGreen fg_green: UInt8 = 0, foregroundBlue fg_blue: UInt8 = 0, backgroundRed bg_red: UInt8 = 255, backgroundGreen bg_green: UInt8 = 255, backgroundBlue bg_blue: UInt8 = 255, forLogLevel logLevel: ActionLogger.LogLevel)
+	public func resetAllLogColors()
+	public func setForegroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel)
+	public func setBackgroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel)
+	public var identifier: String = ""
+	public var showDateAndTime: Bool = true
+	public var showLogLevel: Bool = true
+	public var showFileName: Bool = true
+	public var showLineNumber: Bool = true
+	public var showFuncName: Bool = true
+	public var dateFormatter = ActionLogger.dateFormatterGER
+	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)
+	public func getLogFileName() -> String
+	public func getLogFileURL() -> String
+	public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool
+	public func isEnabledForColor() -> Bool
+	public func hasFile() -> Bool
+	public var debugDescription: String
+	public var textView: NSTextView
+	public var identifier: String
+	public var showDateAndTime: Bool = true
+	public var showLogLevel: Bool = true
+	public var showFileName: Bool = true
+	public var showLineNumber: Bool = true
+	public var showFuncName: Bool = true
+	public var dateFormatter = ActionLogger.dateFormatterGER
+	required public init(coder aDecoder: NSCoder)
+	public func setDefaultLogLevelColors()
+	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)
+	public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool
+	public func isEnabledForColor() -> Bool
+	public func hasFile() -> Bool
+	public var debugDescription: String
+	public func setLogColors(foregroundRed fg_red: UInt8 = 0, foregroundGreen fg_green: UInt8 = 0, foregroundBlue fg_blue: UInt8 = 0, backgroundRed bg_red: UInt8 = 255, backgroundGreen bg_green: UInt8 = 255, backgroundBlue bg_blue: UInt8 = 255, forLogLevel logLevel: ActionLogger.LogLevel)
+	public func resetAllLogColors()
+	public func setForegroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel)
+	public func setBackgroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel)

@@ -1,0 +1,7 @@
+module_name: ActionLogger
+author_name: Christian  Muth
+module_version: 1.1
+clean: true
+excluded_files: ./ActionLogger/AppDelegate.swift
+skip_undocumented: true
+

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Classes  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+  </head>
+  <body>
+    <a title="Classes  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">ActionLogger Docs</a> (6% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">ActionLogger Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Classes  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:C12ActionLogger27ActionLogConsoleDestination">ActionLogConsoleDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:C12ActionLogger24ActionLogFileDestination">ActionLogFileDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:C12ActionLogger28ActionLogTextViewDestination">ActionLogTextViewDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ActionLogger.html">ActionLogger</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:P12ActionLogger28ActionLogDestinationProtocol">ActionLogDestinationProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:V12ActionLogger16ActionLogDetails">ActionLogDetails</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Classes</h1>
+            <p>The following classes are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/ActionLogger"></a>
+                <a name="//apple_ref/swift/Section/ActionLogger" class="dashAnchor"></a>
+                <a href="#/ActionLogger">
+                  <h3 class="section-name">ActionLogger</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C12ActionLogger12ActionLogger"></a>
+                    <a name="//apple_ref/swift/Class/ActionLogger" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C12ActionLogger12ActionLogger">ActionLogger</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#overview' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='overview'>Overview:</h4></p>
+
+<p>The Action Logger class sends messages to the Xcode console and / or a file or a NSTextView object (very new!!!). The messages are processed accordingly before they are issued.
+If the Xcode Plugin XcodeColors is installed, the messages in the Xcode console are displayed in color.
+The aim of the development was to implement a very easy-to-use method that can be generated with the reports to track program run during software testing. On the other hand has been achieved that through a variety of options, the class can also be used for any other protocol tasks.
+See two example outputs</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/6715559/11895791/a38a1694-a581-11e5-8a0f-b244118d45a2.png" alt="alt tag"></p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/6715559/11895795/ab8e6598-a581-11e5-8da4-bc2c59592943.png" alt="alt tag"></p>
+
+<p><a href='#general_description' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='general_description'>general description:</h4></p>
+
+<p>A message line consists of individually assembled components:</p>
+
+<p>{Date+Time}▫︎[{LogLevel}]▫︎[{Filename}:{LineNumber}]▫︎{Functionname}▫︎:▫︎{Messagetext}</p>
+
+<p>Components are enclosed in {},
+▫︎ means space</p>
+
+<p>By default, all components are selected. Each of these components can be turned off (not the message text).</p>
+
+<p><a href='#use' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='use'>Use:</h4></p>
+
+<p>The use of Action Logger class in your project is very simple:</p>
+
+<p>Drag the file ActionLoggerComplete.swift file from Finder directly in Xcode project.
+in AppDelegate.swift immediately after the imports, insert the following:</p>
+
+<pre class="highlight plaintext"><code>// Get a reference to defaultLoggerlet
+log = ActionLogger.defaultLogger ()
+</code></pre>
+
+<p>Once the Action Logger class is referenced once, a default logger is automatically created. The default logger specifies the Xcode Debug Console.</p>
+
+<p>The logger log can now be used in all other .swift files in your project.</p>
+
+<pre class="highlight plaintext"><code>log.verbose("this message is generated in ViewController")
+ActionLogger.info("here is an info for you")
+</code></pre>
+
+<p><img src="https://cloud.githubusercontent.com/assets/6715559/11776753/f29b0af8-a249-11e5-983a-ffb788dc4892.png" alt="alt tag"></p>
+
+<p>As the above example shows, it&rsquo;s even easier: all outputs can also be done via class methods. Step 2 of this procedure could also be left out! If you will use the class methods used internally also the default logger automatically generated.</p>
+
+                        <a href="Classes/ActionLogger.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActionLogger</span> <span class="p">:</span> <span class="kt">CustomDebugStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/ActionLogConsoleDestination"></a>
+                <a name="//apple_ref/swift/Section/ActionLogConsoleDestination" class="dashAnchor"></a>
+                <a href="#/ActionLogConsoleDestination">
+                  <h3 class="section-name">ActionLogConsoleDestination</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C12ActionLogger27ActionLogConsoleDestination"></a>
+                    <a name="//apple_ref/swift/Class/ActionLogConsoleDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C12ActionLogger27ActionLogConsoleDestination">ActionLogConsoleDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <ul>
+<li>A standard log destination that outputs log details to the console</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActionLogConsoleDestination</span> <span class="p">:</span> <span class="kt">ActionLogDestinationProtocol</span><span class="p">,</span> <span class="kt">CustomDebugStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/ActionLogFileDestination"></a>
+                <a name="//apple_ref/swift/Section/ActionLogFileDestination" class="dashAnchor"></a>
+                <a href="#/ActionLogFileDestination">
+                  <h3 class="section-name">ActionLogFileDestination</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C12ActionLogger24ActionLogFileDestination"></a>
+                    <a name="//apple_ref/swift/Class/ActionLogFileDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C12ActionLogger24ActionLogFileDestination">ActionLogFileDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <ul>
+<li>A standard log destination that outputs log details to a file</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActionLogFileDestination</span> <span class="p">:</span> <span class="kt">ActionLogDestinationProtocol</span><span class="p">,</span> <span class="kt">CustomDebugStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/ActionLogTextViewDestination"></a>
+                <a name="//apple_ref/swift/Section/ActionLogTextViewDestination" class="dashAnchor"></a>
+                <a href="#/ActionLogTextViewDestination">
+                  <h3 class="section-name">ActionLogTextViewDestination</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C12ActionLogger28ActionLogTextViewDestination"></a>
+                    <a name="//apple_ref/swift/Class/ActionLogTextViewDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C12ActionLogger28ActionLogTextViewDestination">ActionLogTextViewDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <ul>
+<li>A log destination that outputs log details to a NSTextView</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActionLogTextViewDestination</span> <span class="p">:</span> <span class="kt">ActionLogDestinationProtocol</span><span class="p">,</span> <span class="kt">CustomDebugStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external">Christian  Muth</a>. All rights reserved. (Last updated: 2015-12-21)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.4.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
