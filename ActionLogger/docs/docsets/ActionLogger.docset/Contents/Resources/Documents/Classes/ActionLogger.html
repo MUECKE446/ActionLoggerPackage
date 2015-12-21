@@ -13,7 +13,7 @@
     <a title="ActionLogger Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">ActionLogger Docs</a> (6% documented)</p>
+        <p><a href="../index.html">ActionLogger Docs</a> (19% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -202,6 +202,985 @@ ActionLogger.info("here is an info for you")
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">ActionLoggerVersionZ</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Enums"></a>
+                <a name="//apple_ref/swift/Section/Enums" class="dashAnchor"></a>
+                <a href="#/Enums">
+                  <h3 class="section-name">Enums</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC12ActionLogger12ActionLogger8LogLevel"></a>
+                    <a name="//apple_ref/swift/Enum/LogLevel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:OC12ActionLogger12ActionLogger8LogLevel">LogLevel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the possible values of LogLevel for a log message</p>
+
+<p>it depends on the objects outputLogLevel and the LogLevel of the message whether a message is really written to the output</p>
+
+<p>only log messages with a LogLevel &gt;= outputLogLevel are written out</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">LogLevel</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Comparable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h3 class="section-name">Properties</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC12ActionLogger12ActionLogger10identifierSS"></a>
+                    <a name="//apple_ref/swift/Property/identifier" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC12ActionLogger12ActionLogger10identifierSS">identifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the (unique) identifier for an ActionLogger object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC12ActionLogger12ActionLogger14outputLogLevelOS0_8LogLevel"></a>
+                    <a name="//apple_ref/swift/Property/outputLogLevel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC12ActionLogger12ActionLogger14outputLogLevelOS0_8LogLevel">outputLogLevel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the current outputLogLevel for the ActionLogger object</p>
+
+<p>only log messages with a LogLevel &gt;= outputLogLevel are written out</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">outputLogLevel</span><span class="p">:</span> <span class="kt">LogLevel</span> <span class="o">=</span> <span class="o">.</span><span class="kt">AllLevels</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/DefaultLogger"></a>
+                <a name="//apple_ref/swift/Section/DefaultLogger" class="dashAnchor"></a>
+                <a href="#/DefaultLogger">
+                  <h3 class="section-name">DefaultLogger</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger13defaultLoggerFMS0_FT_S0_"></a>
+                    <a name="//apple_ref/swift/Method/defaultLogger()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger13defaultLoggerFMS0_FT_S0_">defaultLogger()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the defaultLogger is created with the first reference to the class ActionLogger</p>
+
+<p>if you need only the defaultLogger, you don&rsquo;t need instantiating an ActionLogger object.</p>
+
+<p>all public class functions work with this defaultLogger</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">defaultLogger</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">ActionLogger</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>the static defaultLogger</code></p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Setup%20methods"></a>
+                <a name="//apple_ref/swift/Section/Setup methods" class="dashAnchor"></a>
+                <a href="#/Setup%20methods">
+                  <h3 class="section-name">Setup methods</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger5setupFMS0_FT8logLevelOS0_8LogLevel15showDateAndTimeSb12showLogLevelSb12showFileNameSb14showLineNumberSb12showFuncNameSb13dateFormatterCSo15NSDateFormatter11writeToFileGSqPSs9AnyObject___T_"></a>
+                    <a name="//apple_ref/swift/Method/setup(logLevel:showDateAndTime:showLogLevel:showFileName:showLineNumber:showFuncName:dateFormatter:writeToFile:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger5setupFMS0_FT8logLevelOS0_8LogLevel15showDateAndTimeSb12showLogLevelSb12showFileNameSb14showLineNumberSb12showFuncNameSb13dateFormatterCSo15NSDateFormatter11writeToFileGSqPSs9AnyObject___T_">setup(logLevel:showDateAndTime:showLogLevel:showFileName:showLineNumber:showFuncName:dateFormatter:writeToFile:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>use this class function to setup the defaultLogger</p>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setup</span><span class="p">(</span><span class="n">logLevel</span> <span class="nv">logLevel</span><span class="p">:</span> <span class="kt">LogLevel</span> <span class="o">=</span> <span class="o">.</span><span class="kt">AllLevels</span><span class="p">,</span> <span class="nv">showDateAndTime</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showLogLevel</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showFileName</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showLineNumber</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showFuncName</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">dateFormatter</span><span class="p">:</span> <span class="kt">NSDateFormatter</span> <span class="o">=</span> <span class="kt">ActionLogger</span><span class="o">.</span><span class="n">dateFormatterGER</span><span class="p">,</span> <span class="nv">writeToFile</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger5setupFS0_FT8logLevelOS0_8LogLevel15showDateAndTimeSb12showLogLevelSb12showFileNameSb14showLineNumberSb12showFuncNameSb13dateFormatterCSo15NSDateFormatter11writeToFileGSqPSs9AnyObject___T_"></a>
+                    <a name="//apple_ref/swift/Method/setup(logLevel:showDateAndTime:showLogLevel:showFileName:showLineNumber:showFuncName:dateFormatter:writeToFile:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger5setupFS0_FT8logLevelOS0_8LogLevel15showDateAndTimeSb12showLogLevelSb12showFileNameSb14showLineNumberSb12showFuncNameSb13dateFormatterCSo15NSDateFormatter11writeToFileGSqPSs9AnyObject___T_">setup(logLevel:showDateAndTime:showLogLevel:showFileName:showLineNumber:showFuncName:dateFormatter:writeToFile:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup properties of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>logLevel: setup the outputLogLevel  default = .AllLevels</li>
+<li>showDateAndTime: shows the date and time in the message default = true</li>
+<li>showLogLevel: shows the LogLevel of the message default = true</li>
+<li>showFileName: shows the filename where the message is generated default = true</li>
+<li>showLineNumber: shows the linenumber in the file where the message is generated (only if showFileName is true)  default = true</li>
+<li>showFuncName: shows the func name where the message is generated    default = true</li>
+<li>dateFormatter: the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)  default = ActionLogger.dateFormatterGER</li>
+<li>writeToFile: a file to which the messages are written</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setup</span><span class="p">(</span><span class="n">logLevel</span> <span class="nv">logLevel</span><span class="p">:</span> <span class="kt">LogLevel</span> <span class="o">=</span> <span class="o">.</span><span class="kt">AllLevels</span><span class="p">,</span> <span class="nv">showDateAndTime</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>  <span class="nv">showLogLevel</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showFileName</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showLineNumber</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">showFuncName</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">dateFormatter</span><span class="p">:</span> <span class="kt">NSDateFormatter</span> <span class="o">=</span> <span class="kt">ActionLogger</span><span class="o">.</span><span class="n">dateFormatterGER</span><span class="p">,</span> <span class="nv">writeToFile</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>logLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>setup the outputLogLevel  default = .AllLevels</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showDateAndTime</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the date and time in the message default = true</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showLogLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the LogLevel of the message default = true</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showFileName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the filename where the message is generated default = true</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showLineNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the linenumber in the file where the message is generated (only if showFileName is true)  default = true</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showFuncName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the func name where the message is generated    default = true</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dateFormatter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)  default = ActionLogger.dateFormatterGER</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>writeToFile</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>a file to which the messages are written</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger13setupLogLevelFMS0_FOS0_8LogLevelT_"></a>
+                    <a name="//apple_ref/swift/Method/setupLogLevel(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger13setupLogLevelFMS0_FOS0_8LogLevelT_">setupLogLevel(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the outputLogLevel of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupLogLevel</span><span class="p">(</span><span class="nv">logLevel</span><span class="p">:</span> <span class="kt">ActionLogger</span><span class="o">.</span><span class="kt">LogLevel</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger13setupLogLevelFS0_FOS0_8LogLevelT_"></a>
+                    <a name="//apple_ref/swift/Method/setupLogLevel(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger13setupLogLevelFS0_FOS0_8LogLevelT_">setupLogLevel(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the outputLogLevel of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>logLevel: setup the outputLogLevel</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupLogLevel</span><span class="p">(</span><span class="nv">logLevel</span><span class="p">:</span> <span class="kt">ActionLogger</span><span class="o">.</span><span class="kt">LogLevel</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>logLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>setup the outputLogLevel</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger20setupShowDateAndTimeFMS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowDateAndTime(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger20setupShowDateAndTimeFMS0_FSbT_">setupShowDateAndTime(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the showDateAndTime property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupShowDateAndTime</span><span class="p">(</span><span class="nv">showDateAndTime</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger20setupShowDateAndTimeFS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowDateAndTime(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger20setupShowDateAndTimeFS0_FSbT_">setupShowDateAndTime(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the showDateAndTime property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>showDateAndTime: shows the date and time in the message</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupShowDateAndTime</span><span class="p">(</span><span class="nv">showDateAndTime</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showDateAndTime</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the date and time in the message</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger17setupShowLogLevelFMS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowLogLevel(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger17setupShowLogLevelFMS0_FSbT_">setupShowLogLevel(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the showLogLevel property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupShowLogLevel</span><span class="p">(</span><span class="nv">showLogLevel</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger17setupShowLogLevelFS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowLogLevel(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger17setupShowLogLevelFS0_FSbT_">setupShowLogLevel(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the showLogLevel property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>showLogLevel: shows the LogLevel of the message</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupShowLogLevel</span><span class="p">(</span><span class="nv">showLogLevel</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showLogLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the LogLevel of the message</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger17setupShowFileNameFMS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowFileName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger17setupShowFileNameFMS0_FSbT_">setupShowFileName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the showFileName property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupShowFileName</span><span class="p">(</span><span class="nv">showFileName</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger17setupShowFileNameFS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowFileName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger17setupShowFileNameFS0_FSbT_">setupShowFileName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the showFileName property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>showFileName: shows the filename where the message is generated</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupShowFileName</span><span class="p">(</span><span class="nv">showFileName</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showFileName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the filename where the message is generated</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger19setupShowLineNumberFMS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowLineNumber(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger19setupShowLineNumberFMS0_FSbT_">setupShowLineNumber(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the showFileNumber property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupShowLineNumber</span><span class="p">(</span><span class="nv">showLineNumber</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger19setupShowLineNumberFS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowLineNumber(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger19setupShowLineNumberFS0_FSbT_">setupShowLineNumber(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the showFilenumber property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>showLineNumber: shows the linenumber in the file where the message is generated (only if showFileName is true)</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupShowLineNumber</span><span class="p">(</span><span class="nv">showLineNumber</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showLineNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the linenumber in the file where the message is generated (only if showFileName is true)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger17setupShowFuncNameFMS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowFuncName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger17setupShowFuncNameFMS0_FSbT_">setupShowFuncName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the showFuncName property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupShowFuncName</span><span class="p">(</span><span class="nv">showFuncName</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger17setupShowFuncNameFS0_FSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setupShowFuncName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger17setupShowFuncNameFS0_FSbT_">setupShowFuncName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the showFuncName property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>showFuncName: shows the func name where the message is generated</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupShowFuncName</span><span class="p">(</span><span class="nv">showFuncName</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>showFuncName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>shows the func name where the message is generated</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC12ActionLogger12ActionLogger18setupDateFormatterFMS0_FCSo15NSDateFormatterT_"></a>
+                    <a name="//apple_ref/swift/Method/setupDateFormatter(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC12ActionLogger12ActionLogger18setupDateFormatterFMS0_FCSo15NSDateFormatterT_">setupDateFormatter(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>    use this class function to setup the dateFormatter property of the defaultLogger
+</code></pre>
+
+<p>for description of parameters see the instance function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setupDateFormatter</span><span class="p">(</span><span class="nv">dateFormatter</span><span class="p">:</span> <span class="kt">NSDateFormatter</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger18setupDateFormatterFS0_FCSo15NSDateFormatterT_"></a>
+                    <a name="//apple_ref/swift/Method/setupDateFormatter(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger18setupDateFormatterFS0_FCSo15NSDateFormatterT_">setupDateFormatter(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight plaintext"><code>use this function to setup the dateFormatter property of the ActionLogger object
+</code></pre>
+
+<ul>
+<li>Parameters:
+
+<ul>
+<li>dateFormatter: the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)</li>
+</ul></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setupDateFormatter</span><span class="p">(</span><span class="nv">dateFormatter</span><span class="p">:</span> <span class="kt">NSDateFormatter</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dateFormatter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC12ActionLogger12ActionLogger14logSetupValuesFS0_FT_T_"></a>
+                    <a name="//apple_ref/swift/Method/logSetupValues()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC12ActionLogger12ActionLogger14logSetupValuesFS0_FT_T_">logSetupValues()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>logs all properties values to the output</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">logSetupValues</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

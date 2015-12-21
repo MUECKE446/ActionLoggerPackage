@@ -5,6 +5,18 @@
 //  Copyright (c) 2015 Christian Muth. All rights reserved.
 //
 
+/**
+    Version 1.0.0:  the starter with outputs to the Xcode console and/or files
+
+    Version 1.1.0:  add a new ActionLogdestination -> ActionLogTextViewdestination writes output into (NS/UI)TextView control
+
+    Version 1.1.1:  add the new ActionLogDestination to some functions (bug fix)
+                    add outputLogLevel to ActionLogDestinatianProtocoll -> some functions come very easier
+                    add Quick Help descriptions, which are also used for documentation with jazzy
+                    
+
+*/
+
 
 import Foundation
 #if os(OSX)
@@ -195,6 +207,11 @@ public class ActionLogger : CustomDebugStringConvertible {
     public var dateFormatter: NSDateFormatter
     
     // MARK: - Enums
+    /// the possible values of LogLevel for a log message
+    ///
+    /// it depends on the objects outputLogLevel and the LogLevel of the message whether a message is really written to the output
+    ///
+    /// only log messages with a LogLevel >= outputLogLevel are written out
     public enum LogLevel: Int, Comparable {
         case AllLevels = 0,
         MessageOnly,
@@ -230,9 +247,13 @@ public class ActionLogger : CustomDebugStringConvertible {
         }
     }
     
-    // MARK: - Properties (Options)
+    // MARK: - Properties
+    /// the (unique) identifier for an ActionLogger object
     public let identifier: String
     
+    /// the current outputLogLevel for the ActionLogger object
+    ///
+    /// only log messages with a LogLevel >= outputLogLevel are written out
     public var outputLogLevel: LogLevel = .AllLevels {
         didSet {
             for logDestination in logDestinations {
@@ -250,8 +271,11 @@ public class ActionLogger : CustomDebugStringConvertible {
         }
     }
     
-    // MARK: - Properties
-    
+    /// an array with all logDestinations of this ActionLogger object
+    ///
+    /// an ActionLogger can have 1, 2 or more logDestinations e.g.: console and file
+    ///
+    /// - Note: this var is not public
     var logDestinations = [ActionLogDestinationProtocol]()
     
     // MARK: - initializer
@@ -301,6 +325,13 @@ public class ActionLogger : CustomDebugStringConvertible {
     }
     
     // MARK: - DefaultLogger
+    /// the defaultLogger is created with the first reference to the class ActionLogger
+    ///
+    /// if you need only the defaultLogger, you don't need instantiating an ActionLogger object.
+    ///
+    /// all public class functions work with this defaultLogger
+    ///
+    /// - returns: `the static defaultLogger`
     public class func defaultLogger() -> ActionLogger {
         return statics.defaultLogger
     }
@@ -318,11 +349,25 @@ public class ActionLogger : CustomDebugStringConvertible {
     }
     
     // MARK: - Setup methods
-    public class func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
-        defaultLogger().setup(logLevel, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, dateFormatter: dateFormatter, writeToFile: writeToFile)
+    /// use this class function to setup the defaultLogger
+    ///
+    /// for description of parameters see the instance function
+    public class func setup(logLevel logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
+        defaultLogger().setup(logLevel: logLevel, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, dateFormatter: dateFormatter, writeToFile: writeToFile)
     }
     
-    public func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
+    /// use this function to setup properties of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - logLevel: setup the outputLogLevel  default = .AllLevels
+    ///   - showDateAndTime: shows the date and time in the message default = true
+    ///   - showLogLevel: shows the LogLevel of the message default = true
+    ///   - showFileName: shows the filename where the message is generated default = true
+    ///   - showLineNumber: shows the linenumber in the file where the message is generated (only if showFileName is true)  default = true
+    ///   - showFuncName: shows the func name where the message is generated    default = true
+    ///   - dateFormatter: the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)  default = ActionLogger.dateFormatterGER
+    ///   - writeToFile: a file to which the messages are written
+    public func setup(logLevel logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil) {
         outputLogLevel = logLevel;
         
         if let unwrappedWriteToFile : AnyObject = writeToFile {
@@ -336,153 +381,156 @@ public class ActionLogger : CustomDebugStringConvertible {
             }
         }
         
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).outputLogLevel = logLevel
-                (logDestination as! ActionLogConsoleDestination).showDateAndTime = showDateAndTime
-                (logDestination as! ActionLogConsoleDestination).showLogLevel = showLogLevel
-                (logDestination as! ActionLogConsoleDestination).showFileName = showFileName
-                (logDestination as! ActionLogConsoleDestination).showLineNumber = showLineNumber
-                (logDestination as! ActionLogConsoleDestination).showFuncName = showFuncName
-                (logDestination as! ActionLogConsoleDestination).dateFormatter = dateFormatter
-                continue
+        for var logDestination in logDestinations {
+            logDestination.outputLogLevel = logLevel
+            logDestination.showDateAndTime = showDateAndTime
+            logDestination.showLogLevel = showLogLevel
+            logDestination.showFileName = showFileName
+            if logDestination.showFileName == false && logDestination.showLineNumber == true {
+                self.error("showLineNumber cannot set true, if shoefileName is false")
             }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).outputLogLevel = logLevel
-                (logDestination as! ActionLogFileDestination).showDateAndTime = showDateAndTime
-                (logDestination as! ActionLogFileDestination).showLogLevel = showLogLevel
-                (logDestination as! ActionLogFileDestination).showFileName = showFileName
-                (logDestination as! ActionLogFileDestination).showLineNumber = showLineNumber
-                (logDestination as! ActionLogFileDestination).showFuncName = showFuncName
-                (logDestination as! ActionLogFileDestination).dateFormatter = dateFormatter
-                continue
+            else {
+                logDestination.showLineNumber = showLineNumber
             }
+            logDestination.showFuncName = showFuncName
+            logDestination.dateFormatter = dateFormatter
         }
     }
     
+    /// use this class function to setup the outputLogLevel of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupLogLevel(logLevel: ActionLogger.LogLevel) {
         defaultLogger().setupLogLevel(logLevel)
     }
     
+    /// use this function to setup the outputLogLevel of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - logLevel: setup the outputLogLevel
     public func setupLogLevel(logLevel: ActionLogger.LogLevel) {
         outputLogLevel = logLevel;
         
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).outputLogLevel = logLevel
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).outputLogLevel = logLevel
-                continue
-            }
+        for var logDestination in logDestinations {
+            logDestination.outputLogLevel = outputLogLevel
         }
     }
     
     
+    /// use this class function to setup the showDateAndTime property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupShowDateAndTime(showDateAndTime: Bool) {
         defaultLogger().setupShowDateAndTime(showDateAndTime)
     }
     
+    /// use this function to setup the showDateAndTime property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - showDateAndTime: shows the date and time in the message
     public func setupShowDateAndTime(showDateAndTime: Bool) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).showDateAndTime = showDateAndTime
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).showDateAndTime = showDateAndTime
-                continue
-            }
+        for var logDestination in logDestinations {
+            logDestination.showDateAndTime = showDateAndTime
         }
     }
     
+    /// use this class function to setup the showLogLevel property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupShowLogLevel(showLogLevel: Bool) {
         defaultLogger().setupShowLogLevel(showLogLevel)
     }
     
+    /// use this function to setup the showLogLevel property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - showLogLevel: shows the LogLevel of the message
     public func setupShowLogLevel(showLogLevel: Bool) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).showLogLevel = showLogLevel
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).showLogLevel = showLogLevel
-                continue
-            }
+        for var logDestination in logDestinations {
+            logDestination.showLogLevel = showLogLevel
         }
     }
     
+    /// use this class function to setup the showFileName property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupShowFileName(showFileName: Bool) {
         defaultLogger().setupShowFileName(showFileName)
     }
     
+    /// use this function to setup the showFileName property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - showFileName: shows the filename where the message is generated
     public func setupShowFileName(showFileName: Bool) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).showFileName = showFileName
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).showFileName = showFileName
-                continue
+        for var logDestination in logDestinations {
+            logDestination.showFileName = showFileName
+            if showFileName == false {
+                logDestination.showLineNumber = false
             }
         }
     }
     
+    /// use this class function to setup the showFileNumber property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupShowLineNumber(showLineNumber: Bool) {
         defaultLogger().setupShowLineNumber(showLineNumber)
     }
     
+    /// use this function to setup the showFilenumber property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - showLineNumber: shows the linenumber in the file where the message is generated (only if showFileName is true)
     public func setupShowLineNumber(showLineNumber: Bool) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).showLineNumber = showLineNumber
-                continue
+        for var logDestination in logDestinations {
+            if logDestination.showFileName == true {
+                logDestination.showLineNumber = showLineNumber
             }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).showLineNumber = showLineNumber
-                continue
+            else {
+                if showLineNumber == true {
+                    ActionLogger.error("showLineNumber cannot set true, if showFileName is false")
+                }
             }
         }
     }
     
+    /// use this class function to setup the showFuncName property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupShowFuncName(showFuncName: Bool) {
         defaultLogger().setupShowFuncName(showFuncName)
     }
     
+    /// use this function to setup the showFuncName property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - showFuncName: shows the func name where the message is generated
     public func setupShowFuncName(showFuncName: Bool) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).showFuncName = showFuncName
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).showFuncName = showFuncName
-                continue
-            }
+        for var logDestination in logDestinations {
+            logDestination.showFuncName = showFuncName
         }
     }
     
     
+    /// use this class function to setup the dateFormatter property of the defaultLogger
+    ///
+    /// for description of parameters see the instance function
     public class func setupDateFormatter(dateFormatter: NSDateFormatter) {
         defaultLogger().setupDateFormatter(dateFormatter)
     }
     
+    /// use this function to setup the dateFormatter property of the ActionLogger object
+    ///
+    /// - Parameters:
+    ///   - dateFormatter: the dateFormatter which is used (ActionLogger has implemented dateFormatterGER and dateFormatterUSA, but you can also use your own)
     public func setupDateFormatter(dateFormatter: NSDateFormatter) {
-        for logDestination in logDestinations {
-            if logDestination is ActionLogConsoleDestination {
-                (logDestination as! ActionLogConsoleDestination).dateFormatter = dateFormatter
-                continue
-            }
-            if logDestination is ActionLogFileDestination {
-                (logDestination as! ActionLogFileDestination).dateFormatter = dateFormatter
-                continue
-            }
+        for var logDestination in logDestinations {
+            logDestination.dateFormatter = dateFormatter
         }
     }
     
+    /// logs all properties values to the output
     public func logSetupValues() {
         // log the setup values
         var message =   "setupValues for ActionLogger object\n" +
@@ -848,6 +896,7 @@ public protocol ActionLogDestinationProtocol: CustomDebugStringConvertible {
     var showLineNumber: Bool {get set}
     var showFuncName: Bool {get set}
     var dateFormatter: NSDateFormatter {get set}
+    var outputLogLevel: ActionLogger.LogLevel {get set}
     
     func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool)
     func isEnabledForLogLevel(logLevel: ActionLogger.LogLevel) -> Bool
@@ -868,8 +917,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomD
     public var showLineNumber: Bool = true
     public var showFuncName: Bool = true
     public var dateFormatter = ActionLogger.dateFormatterGER
-    
-    var outputLogLevel: ActionLogger.LogLevel = .AllLevels
+    public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
     
     // color enhancement
     var colorProfiles = Dictionary<ActionLogger.LogLevel,ActionLogXcodeColorProfile>()
@@ -1086,8 +1134,7 @@ public class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebu
     public var showLineNumber: Bool = true
     public var showFuncName: Bool = true
     public var dateFormatter = ActionLogger.dateFormatterGER
-    
-    var outputLogLevel: ActionLogger.LogLevel = .AllLevels
+    public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
     
     private var writeToFileURL : NSURL? = nil {
         didSet {
@@ -1287,8 +1334,7 @@ public class ActionLogTextViewDestination : ActionLogDestinationProtocol, Custom
     public var showLineNumber: Bool = true
     public var showFuncName: Bool = true
     public var dateFormatter = ActionLogger.dateFormatterGER
-    
-    var outputLogLevel: ActionLogger.LogLevel = .AllLevels
+    public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
     
     // color enhancement
     var colorProfiles = Dictionary<ActionLogger.LogLevel,ActionLogTextViewColorProfile>()

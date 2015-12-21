@@ -2,30 +2,18 @@ ActionLogger.swift
 	public class var dateFormatterGER: NSDateFormatter
 	public class var dateFormatterUSA: NSDateFormatter
 	public var dateFormatter: NSDateFormatter
-	public enum LogLevel: Int, Comparable
-	public let identifier: String
-	public var outputLogLevel: LogLevel = .AllLevels
+	case AllLevels = 0,
+	MessageOnly,
+	Comment,
+	Verbose,
+	Info,
+	Debug,
+	Warning,
+	Error,
+	Severe
 	public convenience init?()
 	public convenience init?(logFile withLogFile: String)
-	public class func defaultLogger() -> ActionLogger
 	public var debugDescription: String
-	public class func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true, showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil)
-	public func setup(logLevel: LogLevel = .AllLevels, showDateAndTime: Bool = true,  showLogLevel: Bool = true, showFileName: Bool = true, showLineNumber: Bool = true, showFuncName: Bool = true, dateFormatter: NSDateFormatter = ActionLogger.dateFormatterGER, writeToFile: AnyObject? = nil)
-	public class func setupLogLevel(logLevel: ActionLogger.LogLevel)
-	public func setupLogLevel(logLevel: ActionLogger.LogLevel)
-	public class func setupShowDateAndTime(showDateAndTime: Bool)
-	public func setupShowDateAndTime(showDateAndTime: Bool)
-	public class func setupShowLogLevel(showLogLevel: Bool)
-	public func setupShowLogLevel(showLogLevel: Bool)
-	public class func setupShowFileName(showFileName: Bool)
-	public func setupShowFileName(showFileName: Bool)
-	public class func setupShowLineNumber(showLineNumber: Bool)
-	public func setupShowLineNumber(showLineNumber: Bool)
-	public class func setupShowFuncName(showFuncName: Bool)
-	public func setupShowFuncName(showFuncName: Bool)
-	public class func setupDateFormatter(dateFormatter: NSDateFormatter)
-	public func setupDateFormatter(dateFormatter: NSDateFormatter)
-	public func logSetupValues()
 	public class func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true)
 	public func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true)
 	public class func exec(logLevel: LogLevel = .Debug, closure: () -> () = {})
@@ -78,6 +66,7 @@ ActionLogger.swift
 	var showLineNumber: Bool {get set}
 	var showFuncName: Bool {get set}
 	var dateFormatter: NSDateFormatter {get set}
+	var outputLogLevel: ActionLogger.LogLevel {get set}
 	func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool)
 	func isEnabledForLogLevel(logLevel: ActionLogger.LogLevel) -> Bool
 	func hasFile() -> Bool
@@ -89,6 +78,7 @@ ActionLogger.swift
 	public var showLineNumber: Bool = true
 	public var showFuncName: Bool = true
 	public var dateFormatter = ActionLogger.dateFormatterGER
+	public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
 	public func setDefaultLogLevelColors()
 	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)
 	public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool
@@ -106,6 +96,7 @@ ActionLogger.swift
 	public var showLineNumber: Bool = true
 	public var showFuncName: Bool = true
 	public var dateFormatter = ActionLogger.dateFormatterGER
+	public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
 	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)
 	public func getLogFileName() -> String
 	public func getLogFileURL() -> String
@@ -121,6 +112,7 @@ ActionLogger.swift
 	public var showLineNumber: Bool = true
 	public var showFuncName: Bool = true
 	public var dateFormatter = ActionLogger.dateFormatterGER
+	public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
 	required public init(coder aDecoder: NSCoder)
 	public func setDefaultLogLevelColors()
 	public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true)

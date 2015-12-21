@@ -27,7 +27,7 @@ By default, all components are selected. Each of these components can be turned 
 
 The use of Action Logger class in your project is very simple:
 
-Drag the file ActionLoggerComplete.swift file from Finder directly in Xcode project.
+Drag the file ActionLogger/ActionLogger.swift file from Finder directly in Xcode project.
 in AppDelegate.swift immediately after the imports, insert the following: 
 
 ```
