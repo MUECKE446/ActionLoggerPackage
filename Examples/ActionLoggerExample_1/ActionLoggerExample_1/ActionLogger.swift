@@ -13,6 +13,10 @@
     Version 1.1.1:  add the new ActionLogDestination to some functions (bug fix)
                     add outputLogLevel to ActionLogDestinatianProtocoll -> some functions come very easier
                     add Quick Help descriptions, which are also used for documentation with jazzy
+
+    Version 1.1.2:  sometimes in testing it seems, that on beginning of logging some text is missing. But this could'nt reproduced.
+                    Therefore I try it without a queue. The queue was used, to hold messages together, if more ActionLogger objects in separate threads
+                    outputs to Xcode console.
                     
 
 */
@@ -174,7 +178,6 @@ public class ActionLogger : CustomDebugStringConvertible {
     struct constants {
         static let defaultLoggerIdentifier = "de.muecke-software.ActionLogger.defaultLogger"
         static let baseConsoleDestinationIdentifier = "de.muecke-software.ActionLogger.logdestination.console"
-        static let logQueueIdentifier = "de.muecke-software.ActionLogger.queue"
         /**
          bei
          Veränderung der Schnittstelle                       X
@@ -194,13 +197,12 @@ public class ActionLogger : CustomDebugStringConvertible {
          
          ** !!! Achtung: die Version als String befindet sich bei constants! **
          */
-        static let ActionLoggerVersion: String = "1.1.0"
+        static let ActionLoggerVersion: String = "1.1.2"
     }
     
     struct statics {
         static var loggerDict = [String: ActionLogger]()
         static let defaultLogger: ActionLogger! = ActionLogger(identifier:ActionLogger.constants.defaultLoggerIdentifier)
-        static var logQueue = dispatch_queue_create(ActionLogger.constants.logQueueIdentifier, nil)
         static let standardLogConsoleDestination: ActionLogDestinationProtocol =  ActionLogConsoleDestination(identifier: ActionLogger.constants.baseConsoleDestinationIdentifier)
     }
     
@@ -996,9 +998,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomD
         
         // print it, only if the LogDestination should print this
         if isEnabledForLogLevel(logDetails.logLevel) {
-            dispatch_sync(ActionLogger.statics.logQueue) {
-                print(fullLogMessage, terminator: "")
-            }
+            print(fullLogMessage, terminator: "")
         }
     }
     
