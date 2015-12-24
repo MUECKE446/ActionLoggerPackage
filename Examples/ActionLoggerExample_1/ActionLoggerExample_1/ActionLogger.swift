@@ -13,6 +13,9 @@
     Version 1.1.1:  add the new ActionLogDestination to some functions (bug fix)
                     add outputLogLevel to ActionLogDestinatianProtocoll -> some functions come very easier
                     add Quick Help descriptions, which are also used for documentation with jazzy
+
+    Version 1.1.2:  setting showFileName = false && showLineNumber = true is forbidden
+                    if this detected, showLineNumber is set false
                     
 
 */
@@ -386,14 +389,13 @@ public class ActionLogger : CustomDebugStringConvertible {
             logDestination.showDateAndTime = showDateAndTime
             logDestination.showLogLevel = showLogLevel
             logDestination.showFileName = showFileName
-            if logDestination.showFileName == false && logDestination.showLineNumber == true {
-                self.error("showLineNumber cannot set true, if shoefileName is false")
-            }
-            else {
-                logDestination.showLineNumber = showLineNumber
-            }
+            logDestination.showLineNumber = showLineNumber
             logDestination.showFuncName = showFuncName
             logDestination.dateFormatter = dateFormatter
+            if !logDestination.showFileName && logDestination.showLineNumber {
+                ActionLogger.defaultLogger().warning("setting showFileName = false AND showLineNumber = true is forbidden! shoeLineNumber is now set to false")
+                logDestination.showLineNumber = false
+            }
         }
     }
     
