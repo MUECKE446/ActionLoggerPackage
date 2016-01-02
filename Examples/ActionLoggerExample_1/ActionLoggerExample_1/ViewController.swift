@@ -34,7 +34,17 @@ class ViewController: NSViewController {
         log!.info("let us start with a NSTextView")
         log!.verbose("it looks good")
         log!.error("this is only a message in category: error")
+        outputLogLines(linesNumber: 1000, log: log!)
         
+    }
+    
+    func outputLogLines(linesNumber linesNumber: Int, log: ActionLogger) {
+//        var logQueue = dispatch_queue_create("myovlyQueue", nil)
+//        dispatch_sync(logQueue) {
+            for i in 1 ... linesNumber {
+                log.info("\(i): this is a line for output \(i)")
+            }
+//        }
     }
 
 }

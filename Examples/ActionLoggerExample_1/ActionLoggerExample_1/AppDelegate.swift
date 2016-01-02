@@ -33,6 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func generateLineForEachLevel(sender: NSMenuItem) {
         generateLineForEachLevel()
         logger.logSetupValues()
+        textViewController?.outputLogLines(linesNumber: 1000, log: logger)
+        
         
     }
     
@@ -51,7 +53,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let _ = textViewController {
             textViewController!.generateOutputToTextViewInWindow()
         }
-        
     }
 }
 
