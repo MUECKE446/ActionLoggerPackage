@@ -16,7 +16,8 @@
 
     Version 1.1.2:  setting showFileName = false && showLineNumber = true is forbidden
                     if this detected, showLineNumber is set false
-                    
+    
+    Version 1.1.3:  error in Xcode 7.3 in function logSetupValues
 
 */
 
@@ -197,7 +198,7 @@ public class ActionLogger : CustomDebugStringConvertible {
          
          ** !!! Achtung: die Version als String befindet sich bei constants! **
          */
-        static let ActionLoggerVersion: String = "1.1.0"
+        static let ActionLoggerVersion: String = "1.1.3"
     }
     
     struct statics {
@@ -542,7 +543,8 @@ public class ActionLogger : CustomDebugStringConvertible {
             "with logDestinations:\n"
         
         for logDestination in logDestinations {
-            let typeLongName = _stdlib_getDemangledTypeName(logDestination)
+            //let typeLongName = _stdlib_getDemangledTypeName(logDestination)   // error since Xcode 7.3
+            let typeLongName = String(self.dynamicType)
             let tokens = typeLongName.characters.split(isSeparator: { $0 == "." }).map { String($0) }
             let typeName = tokens.last!
             message += "\n" +
@@ -564,11 +566,12 @@ public class ActionLogger : CustomDebugStringConvertible {
     }
     
     // MARK: - Logging methods
-    public class func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true) {
+    public class func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line, withFileLineFunctionInfo: Bool = true) {
         self.defaultLogger().logLine(logMessage, logLevel: logLevel, functionName: functionName, fileName: fileName, lineNumber: lineNumber, withFileLineFunctionInfo: withFileLineFunctionInfo)
     }
     
-    public func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__, withFileLineFunctionInfo: Bool = true) {
+    
+    public func logLine(logMessage: String, logLevel: LogLevel = .Debug, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line, withFileLineFunctionInfo: Bool = true) {
         let date = NSDate()
         let logDetails = ActionLogDetails(logLevel: logLevel, date: date, logMessage: logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
         for logDestination in self.logDestinations {
@@ -599,66 +602,66 @@ public class ActionLogger : CustomDebugStringConvertible {
     
     
     // MARK: - Convenience logging methods
-    public class func messageOnly(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func messageOnly(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().messageOnly(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func messageOnly(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func messageOnly(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .MessageOnly, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func comment(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func comment(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().comment(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func comment(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func comment(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Comment, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
-    public class func verbose(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func verbose(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().verbose(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func verbose(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func verbose(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Verbose, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func debug(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func debug(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().debug(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func debug(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func debug(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Debug, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func info(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func info(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().info(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func info(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func info(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Info, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func warning(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func warning(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().warning(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func warning(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func warning(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Warning, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func error(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func error(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().error(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func error(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func error(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Error, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public class func severe(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public class func severe(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.defaultLogger().severe(logMessage, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
-    public func severe(logMessage: String, functionName: String = __FUNCTION__, fileName: String = __FILE__, lineNumber: Int = __LINE__) {
+    public func severe(logMessage: String, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
         self.logLine(logMessage, logLevel: .Severe, functionName: functionName, fileName: fileName, lineNumber: lineNumber)
     }
     
@@ -998,7 +1001,7 @@ public class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomD
         
         // print it, only if the LogDestination should print this
         if isEnabledForLogLevel(logDetails.logLevel) {
-            dispatch_sync(ActionLogger.statics.logQueue) {
+            dispatch_async(ActionLogger.statics.logQueue) {
                 print(fullLogMessage, terminator: "")
             }
         }
@@ -1012,7 +1015,6 @@ public class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomD
     // color enhancement
     public func isEnabledForColor() -> Bool {
         let dict = NSProcessInfo.processInfo().environment
-        
         if let env = dict["XcodeColors"] as String! {
             return env == "YES"
         }
@@ -1539,6 +1541,236 @@ public class ActionLogTextViewDestination : ActionLogDestinationProtocol, Custom
     }
     #endif
 }
+
+// MARK: - ActionLogXcodeConsoleSimulationDestination
+/// - A standard log destination that outputs log details to the console
+public class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProtocol, CustomDebugStringConvertible {
+    /// the TextView
+    #if os(OSX)
+    public var textView: NSTextView
+    #endif
+    
+    //    var owner: ActionLogger
+    public var identifier: String
+    
+    public var showDateAndTime: Bool = true
+    public var showLogLevel: Bool = true
+    public var showFileName: Bool = true
+    public var showLineNumber: Bool = true
+    public var showFuncName: Bool = true
+    public var dateFormatter = ActionLogger.dateFormatterGER
+    public var outputLogLevel: ActionLogger.LogLevel = .AllLevels
+    
+    // color enhancement
+    var colorProfiles = Dictionary<ActionLogger.LogLevel,ActionLogXcodeColorProfile>()
+    
+    
+    init(identifier: String = "", textView: NSTextView) {
+            self.identifier = identifier
+            self.textView = textView
+            
+        // color enhancement
+        if isEnabledForColor() {
+            // setting default color values
+            #if os(OSX)
+                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: NSColor.whiteColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: NSColor.lightGrayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.grayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.darkGrayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: NSColor.blueColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.greenColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.orangeColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.redColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: NSColor.magentaColor(),backgroundColor: NSColor.whiteColor())
+            #endif
+            
+            #if os(iOS)
+                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+            #endif
+        }
+    }
+    
+    public func setDefaultLogLevelColors() {
+        // color enhancement
+        if isEnabledForColor() {
+            // setting default color values
+            #if os(OSX)
+                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: NSColor.whiteColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: NSColor.lightGrayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.grayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.darkGrayColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: NSColor.blueColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.greenColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.orangeColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.redColor(),backgroundColor: NSColor.whiteColor())
+                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: NSColor.magentaColor(),backgroundColor: NSColor.whiteColor())
+            #endif
+            
+            #if os(iOS)
+                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+            #endif
+        }
+    }
+    
+    public func processLogDetails(logDetails: ActionLogDetails, withFileLineFunctionInfo: Bool = true) {
+        var fullLogMessage = preProcessLogDetails(logDetails, showDateAndTime: showDateAndTime, showLogLevel: showLogLevel, showFileName: showFileName, showLineNumber: showLineNumber, showFuncName: showFuncName, dateFormatter: dateFormatter, withFileLineFunctionInfo: withFileLineFunctionInfo)
+        
+        // color enhancement
+        if let cp = self.colorProfiles[logDetails.logLevel] {
+            fullLogMessage = cp.fg_code + cp.bg_code + fullLogMessage + cp.all_reset_code
+        }
+        
+        
+        let textViewMessage = NSMutableAttributedString(string: fullLogMessage)
+//        let messageRange = NSRange.init(location: 0, length: textViewMessage.length)
+        
+        // print it, only if the LogDestination should print this
+        if isEnabledForLogLevel(logDetails.logLevel) {
+            #if os(OSX)
+                textView.textStorage!.appendAttributedString(textViewMessage)
+            #endif
+            
+        }
+    }
+    
+    // MARK: - Misc methods
+    public func isEnabledForLogLevel (logLevel: ActionLogger.LogLevel) -> Bool {
+        return logLevel >= self.outputLogLevel
+    }
+    
+    // color enhancement
+    public func isEnabledForColor() -> Bool {
+        return true
+//        let dict = NSProcessInfo.processInfo().environment
+//        
+//        if let env = dict["XcodeColors"] as String! {
+//            return env == "YES"
+//        }
+//        return false
+    }
+    
+    public func hasFile() -> Bool {
+        return false
+    }
+    
+    // MARK: - DebugPrintable
+    public var debugDescription: String {
+        get {
+            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
+        }
+    }
+    
+    // color enhancement
+    // MARK: - color enhancement
+    public func setLogColors(foregroundRed fg_red: UInt8 = 0, foregroundGreen fg_green: UInt8 = 0, foregroundBlue fg_blue: UInt8 = 0, backgroundRed bg_red: UInt8 = 255, backgroundGreen bg_green: UInt8 = 255, backgroundBlue bg_blue: UInt8 = 255, forLogLevel logLevel: ActionLogger.LogLevel) {
+        if var cp = self.colorProfiles[logLevel] {
+            cp.fg_Red = fg_red; cp.fg_Green = fg_green; cp.fg_Blue = fg_blue
+            cp.bg_Red = bg_red; cp.bg_Green = bg_green; cp.bg_Blue = bg_blue
+            cp.buildForegroundCode()
+            cp.buildBackgroundCode()
+            self.colorProfiles[logLevel] = cp
+        }
+    }
+    
+    /*! using setLogColors:
+    setLogColor(foregroundRed:0,foregroundGreen:0,foregroundBlue:0,forLogLevel:.Verbose)        means: resetForegroundColor of logLevel .Verbose to black
+    setLogColor(backgroundRed:255,backgroundGreen:255,backgroundBlue:255,forLogLevel:.Debug)    means: resetBackgroundColor of logLevel .Debug   to white
+    */
+    
+    public func resetAllLogColors() {
+        for (logLevel, var colorProfile) in colorProfiles {
+            colorProfile.fg_Red = 0; colorProfile.fg_Green = 0; colorProfile.fg_Blue = 0
+            colorProfile.bg_Red = 255; colorProfile.bg_Green = 255; colorProfile.bg_Blue = 255
+            colorProfile.buildForegroundCode()
+            colorProfile.buildBackgroundCode()
+            self.colorProfiles[logLevel] = colorProfile
+        }
+    }
+    
+    #if os(OSX)
+    
+    public func setForegroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel) {
+        var fg_red: CGFloat = 0, fg_green: CGFloat = 0, fg_blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        let c = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace())
+        c!.getRed(&fg_red, green: &fg_green, blue: &fg_blue, alpha: &alpha)
+        
+        if var cp = self.colorProfiles[logLevel] {
+            cp.fg_Red = UInt8(fg_red * 255.0); cp.fg_Green = UInt8(fg_green * 255.0); cp.fg_Blue = UInt8(fg_blue * 255.0)
+            cp.buildForegroundCode()
+            cp.buildBackgroundCode()
+            self.colorProfiles[logLevel] = cp
+        }
+    }
+    
+    
+    public func setBackgroundColor(color: NSColor, forLogLevel logLevel: ActionLogger.LogLevel) {
+        var bg_red: CGFloat = 0, bg_green: CGFloat = 0, bg_blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        let c = color.colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace())
+        c!.getRed(&bg_red, green: &bg_green, blue: &bg_blue, alpha: &alpha)
+        
+        if var cp = self.colorProfiles[logLevel] {
+            cp.bg_Red = UInt8(bg_red * 255.0); cp.bg_Green = UInt8(bg_green * 255.0); cp.bg_Blue = UInt8(bg_blue * 255.0)
+            cp.buildForegroundCode()
+            cp.buildBackgroundCode()
+            self.colorProfiles[logLevel] = cp
+        }
+    }
+    
+    #endif
+    
+    #if os(iOS)
+    
+    public func setForegroundColor(color: UIColor, forLogLevel logLevel: ActionLogger.LogLevel) {
+    var fg_red: CGFloat = 0, fg_green: CGFloat = 0, fg_blue: CGFloat = 0
+    var alpha: CGFloat = 0
+    color.getRed(&fg_red, green: &fg_green, blue: &fg_blue, alpha: &alpha)
+    
+    if var cp = self.colorProfiles[logLevel] {
+    cp.fg_Red = UInt8(fg_red * 255.0); cp.fg_Green = UInt8(fg_green * 255.0); cp.fg_Blue = UInt8(fg_blue * 255.0)
+    cp.buildForegroundCode()
+    cp.buildBackgroundCode()
+    self.colorProfiles[logLevel] = cp
+    }
+    }
+    
+    
+    public func setBackgroundColor(color: UIColor, forLogLevel logLevel: ActionLogger.LogLevel) {
+    var bg_red: CGFloat = 0, bg_green: CGFloat = 0, bg_blue: CGFloat = 0
+    var alpha: CGFloat = 0
+    
+    color.getRed(&bg_red, green: &bg_green, blue: &bg_blue, alpha: &alpha)
+    
+    if var cp = self.colorProfiles[logLevel] {
+    cp.bg_Red = UInt8(bg_red * 255.0); cp.bg_Green = UInt8(bg_green * 255.0); cp.bg_Blue = UInt8(bg_blue * 255.0)
+    cp.buildForegroundCode()
+    cp.buildBackgroundCode()
+    self.colorProfiles[logLevel] = cp
+    }
+    }
+    
+    #endif
+}
+
+
 
 // some usefull extensions from
 // NSScanner+Swift.swift
