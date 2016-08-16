@@ -29,7 +29,9 @@ class ViewController: NSViewController {
     }
     
     func generateOutputToTextViewInWindow() {
-        let textViewDestination = ActionLogTextViewDestination(identifier:"textView",textView: outputTextView)
+//        let textViewDestination = ActionLogTextViewDestination(identifier:"textView",textView: outputTextView)
+        let textViewDestination = ActionLogXcodeConsoleSimulationDestination(identifier:"textView",textView: outputTextView)
+        
         let log = ActionLogger(identifier: "newLogger",logDestinations: [textViewDestination])
         log!.info("let us start with a NSTextView")
         log!.verbose("it looks good")
@@ -39,13 +41,21 @@ class ViewController: NSViewController {
     }
     
     func outputLogLines(linesNumber linesNumber: Int, log: ActionLogger) {
-//        var logQueue = dispatch_queue_create("myovlyQueue", nil)
-//        dispatch_sync(logQueue) {
-            for i in 1 ... linesNumber {
-                log.info("\(i): this is a line for output \(i)")
-            }
-//        }
+        for i in 1 ... linesNumber {
+            log.debug("\(i): this is a line for output \(i)")
+        }
     }
 
+    func fixAttributesInTextView() {
+        let s = outputTextView.textStorage!.string
+        let string: MyMutableAttributedString = MyMutableAttributedString(string: s)
+//        var s1 = MyMutableAttributedString()
+//        s1.appendAttributedString(NSMutableAttributedString(string: s))
+        
+        string.fixAttributesInRange(NSRange.init(location: 0, length: string.length))
+        outputTextView.textStorage!.replaceCharactersInRange(NSRange.init(location: 0, length: string.length), withAttributedString: string)
+        
+    }
+    
 }
 

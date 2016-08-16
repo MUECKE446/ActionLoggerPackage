@@ -54,5 +54,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             textViewController!.generateOutputToTextViewInWindow()
         }
     }
+    
+    @IBAction func fixAttributesInTextView(sender: NSMenuItem) {
+        if let _ = textViewController {
+            textViewController!.fixAttributesInTextView()
+        }
+    }
+    
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CD059FE1C37E1FC0028840B /* MyMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD059FD1C37E1FC0028840B /* MyMutableAttributedString.swift */; };
 		4CE6F8CE1C1E1EEC0051A1FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6F8CD1C1E1EEC0051A1FB /* AppDelegate.swift */; };
 		4CE6F8D01C1E1EEC0051A1FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6F8CF1C1E1EEC0051A1FB /* ViewController.swift */; };
 		4CE6F8D21C1E1EEC0051A1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4CE6F8D11C1E1EEC0051A1FB /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4CD059FD1C37E1FC0028840B /* MyMutableAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMutableAttributedString.swift; sourceTree = "<group>"; };
 		4CE6F8CA1C1E1EEC0051A1FB /* ActionLoggerExample_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActionLoggerExample_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE6F8CD1C1E1EEC0051A1FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4CE6F8CF1C1E1EEC0051A1FB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				4CE6F8DC1C1E1F280051A1FB /* ActionLogger.swift */,
 				4CE6F8CD1C1E1EEC0051A1FB /* AppDelegate.swift */,
 				4CE6F8CF1C1E1EEC0051A1FB /* ViewController.swift */,
+				4CD059FD1C37E1FC0028840B /* MyMutableAttributedString.swift */,
 				4CE6F8D11C1E1EEC0051A1FB /* Assets.xcassets */,
 				4CE6F8D31C1E1EEC0051A1FB /* Main.storyboard */,
 				4CE6F8D61C1E1EEC0051A1FB /* Info.plist */,
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CE6F8D01C1E1EEC0051A1FB /* ViewController.swift in Sources */,
+				4CD059FE1C37E1FC0028840B /* MyMutableAttributedString.swift in Sources */,
 				4CE6F8CE1C1E1EEC0051A1FB /* AppDelegate.swift in Sources */,
 				4CE6F8DD1C1E1F280051A1FB /* ActionLogger.swift in Sources */,
 			);
@@ -277,6 +281,7 @@
 				4CE6F8DB1C1E1EEC0051A1FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
