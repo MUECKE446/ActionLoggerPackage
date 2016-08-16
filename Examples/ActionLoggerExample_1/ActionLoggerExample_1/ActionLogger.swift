@@ -16,7 +16,8 @@
 
     Version 1.1.2:  setting showFileName = false && showLineNumber = true is forbidden
                     if this detected, showLineNumber is set false
-                    
+    
+    Version 1.1.3:  error in Xcode 7.3 in function logSetupValues
 
 */
 
@@ -197,7 +198,7 @@ public class ActionLogger : CustomDebugStringConvertible {
          
          ** !!! Achtung: die Version als String befindet sich bei constants! **
          */
-        static let ActionLoggerVersion: String = "1.1.0"
+        static let ActionLoggerVersion: String = "1.1.3"
     }
     
     struct statics {
