@@ -11,7 +11,7 @@ import Cocoa
 
 class MyMutableAttributedString: NSMutableAttributedString {
     
-    private var _contents: NSMutableAttributedString
+    fileprivate var _contents: NSMutableAttributedString
     
     override var string: String {
         get {
@@ -40,7 +40,7 @@ class MyMutableAttributedString: NSMutableAttributedString {
     }
     
 
-    required init?(pasteboardPropertyList propertyList: AnyObject, ofType type: String) {
+    required init?(pasteboardPropertyList propertyList: Any, ofType type: String) {
         fatalError("init(pasteboardPropertyList:ofType:) has not been implemented")
     }
 
@@ -48,70 +48,70 @@ class MyMutableAttributedString: NSMutableAttributedString {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func attributesAtIndex(location: Int, effectiveRange range: NSRangePointer) -> [String : AnyObject] {
-        return (self._contents.attributesAtIndex(location, effectiveRange: range))
+    override func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [String : Any] {
+        return (self._contents.attributes(at: location, effectiveRange: range))
     }
     
-    override func replaceCharactersInRange(range: NSRange, withAttributedString attrString: NSAttributedString) {
-        self._contents.replaceCharactersInRange(range, withAttributedString: attrString)
+    override func replaceCharacters(in range: NSRange, with attrString: NSAttributedString) {
+        self._contents.replaceCharacters(in: range, with: attrString)
     }
     
-    override func setAttributes(attrs: [String : AnyObject]?, range: NSRange) {
+    override func setAttributes(_ attrs: [String : Any]?, range: NSRange) {
         self._contents.setAttributes(attrs, range: range)
     }
     
-    override func fixAttachmentAttributeInRange(range: NSRange) {
-        self._contents.fixAttributesInRange(range)
+    override func fixAttachmentAttribute(in range: NSRange) {
+        self._contents.fixAttributes(in: range)
         XcodeColors()
     }
 
     
-    private func XcodeColors() {
+    fileprivate func XcodeColors() {
         _ = string as NSString
         let editedRange = NSRange.init(location: 0, length: self._contents.length)
         
         //var attrs = NSMutableDictionary(capacity: 2)
-        let attrs = NSMutableDictionary(objects: [NSColor.clearColor(),NSColor.clearColor()], forKeys: [NSBackgroundColorAttributeName,NSForegroundColorAttributeName])
-        attrs.removeObjectForKey(NSForegroundColorAttributeName)
-        attrs.removeObjectForKey(NSBackgroundColorAttributeName)
+        let attrs = NSMutableDictionary(objects: [NSColor.clear,NSColor.clear], forKeys: [NSBackgroundColorAttributeName as NSCopying,NSForegroundColorAttributeName as NSCopying])
+        attrs.removeObject(forKey: NSForegroundColorAttributeName)
+        attrs.removeObject(forKey: NSBackgroundColorAttributeName)
 
         // Attribute fürs unsichtbar machen
-        let clearAttrs = NSDictionary(objects: [NSFont.systemFontOfSize(0.001),NSColor.clearColor()], forKeys: [NSFontAttributeName,NSForegroundColorAttributeName])
+        let clearAttrs = NSDictionary(objects: [NSFont.systemFont(ofSize: 0.001),NSColor.clear], forKeys: [NSFontAttributeName as NSCopying,NSForegroundColorAttributeName as NSCopying])
 
         // finde alle ESCAPEs
-        let matchesEscapeSequencesPattern = escapeSequencePattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesEscapeSequencesPattern = escapeSequencePattern.matches(in: string, options: .reportProgress, range: editedRange)
         
         setColorsInComponents(matchesEscapeSequencesPattern, colorAttributes: attrs, string: string)
         
         // finde zunächst alle Sequenzen für die Vordergrund Farbe
-        let matchesColorPrefixForegroundPattern = xcodeColorPrefixForegroundPattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesColorPrefixForegroundPattern = xcodeColorPrefixForegroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesColorPrefixForegroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
             self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
         }
         
         // finde zunächst alle Sequenzen für die Hintergrundfarbe
-        let matchesColorPrefixBackgroundPattern = xcodeColorPrefixBackgroundPattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesColorPrefixBackgroundPattern = xcodeColorPrefixBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesColorPrefixBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
             self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
         }
         
-        let matchesResetForegroundPattern = xcodeColorResetForegroundPattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesResetForegroundPattern = xcodeColorResetForegroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetForegroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
             self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
 
         }
 
-        let matchesResetBackgroundPattern = xcodeColorResetBackgroundPattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesResetBackgroundPattern = xcodeColorResetBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
             self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
 
         }
 
-        let matchesResetForeAndBackgroundPattern = xcodeColorResetForeAndBackgroundPattern.matchesInString(string, options: .ReportProgress, range: editedRange)
+        let matchesResetForeAndBackgroundPattern = xcodeColorResetForeAndBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetForeAndBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
             self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
@@ -119,7 +119,7 @@ class MyMutableAttributedString: NSMutableAttributedString {
         // hier müßte ich alle Esc Sequenzen zusammenhaben
     }
     
-    func setColorsInComponents(xs: [NSTextCheckingResult], colorAttributes: NSMutableDictionary, string: String) {
+    func setColorsInComponents(_ xs: [NSTextCheckingResult], colorAttributes: NSMutableDictionary, string: String) {
         var resultArr: [NSRange] = []
         let text = string as NSString
         let length = text.length
@@ -139,7 +139,7 @@ class MyMutableAttributedString: NSMutableAttributedString {
         // nun ist der gesamte string in components aufgeteilt
         // stelle nun fest, um was es sich im einzelnen handelt
         for r in resultArr {
-            let tmpStr = text.substringWithRange(r) as NSString
+            let tmpStr = text.substring(with: r) as NSString
             var reset = false
             var reset_fg = false
             var reset_bg = false
@@ -157,15 +157,15 @@ class MyMutableAttributedString: NSMutableAttributedString {
             if reset || reset_fg || reset_bg {
                 if reset {
                     // beide Attribute werden gelöscht
-                    colorAttributes.removeObjectForKey(NSForegroundColorAttributeName)
-                    colorAttributes.removeObjectForKey(NSBackgroundColorAttributeName)
+                    colorAttributes.removeObject(forKey: NSForegroundColorAttributeName)
+                    colorAttributes.removeObject(forKey: NSBackgroundColorAttributeName)
                 }
                 else {
                     if reset_fg {
-                        colorAttributes.removeObjectForKey(NSForegroundColorAttributeName)
+                        colorAttributes.removeObject(forKey: NSForegroundColorAttributeName)
                     }
                     else {
-                        colorAttributes.removeObjectForKey(NSBackgroundColorAttributeName)
+                        colorAttributes.removeObject(forKey: NSBackgroundColorAttributeName)
                     }
                 }
             }
@@ -173,20 +173,20 @@ class MyMutableAttributedString: NSMutableAttributedString {
                 // nun kann es sich nur noch um einen neuen Wert für Vorder- oder Hintergrungfarbe handeln
                 
                 // finde Sequenz für die Vordergrundfarbe
-                let matchesColorPrefixForegroundPattern = xcodeColorPrefixForegroundPattern.matchesInString(tmpStr as String, options: .ReportProgress, range: NSRange.init(location: 0, length: tmpStr.length))
+                let matchesColorPrefixForegroundPattern = xcodeColorPrefixForegroundPattern.matches(in: tmpStr as String, options: .reportProgress, range: NSRange.init(location: 0, length: tmpStr.length))
                 // finde Sequenz für die Hintergrundfarbe
-                let matchesColorPrefixBackgroundPattern = xcodeColorPrefixBackgroundPattern.matchesInString(tmpStr as String, options: .ReportProgress, range: NSRange.init(location: 0, length: tmpStr.length))
+                let matchesColorPrefixBackgroundPattern = xcodeColorPrefixBackgroundPattern.matches(in: tmpStr as String, options: .reportProgress, range: NSRange.init(location: 0, length: tmpStr.length))
                 
                 if !matchesColorPrefixForegroundPattern.isEmpty {
                     // das ist die Sequenz: \\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};
-                    let string1 = tmpStr.substringWithRange(matchesColorPrefixForegroundPattern[0].range)
-                    colorAttributes.setObject(getColor(components: string1), forKey: NSForegroundColorAttributeName)
+                    let string1 = tmpStr.substring(with: matchesColorPrefixForegroundPattern[0].range)
+                    colorAttributes.setObject(getColor(components: string1), forKey: NSForegroundColorAttributeName as NSCopying)
                 }
                 else {
                     assert(!matchesColorPrefixBackgroundPattern.isEmpty)
                     // das ist die Sequenz: \\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};
-                    let string1 = tmpStr.substringWithRange(matchesColorPrefixBackgroundPattern[0].range)
-                    colorAttributes.setObject(getColor(components: string1), forKey: NSBackgroundColorAttributeName)
+                    let string1 = tmpStr.substring(with: matchesColorPrefixBackgroundPattern[0].range)
+                    colorAttributes.setObject(getColor(components: string1), forKey: NSBackgroundColorAttributeName as NSCopying)
                 }
             }
             // nun kann die Komponente mit den Farben versehen werden
@@ -194,15 +194,15 @@ class MyMutableAttributedString: NSMutableAttributedString {
         }
     }
     
-    private func getColor(components componentString: String) -> NSColor {
-        let searchString = componentString.substringFromIndex(componentString.characters.startIndex.advancedBy(4))
+    fileprivate func getColor(components componentString: String) -> NSColor {
+        let searchString = componentString.substring(from: componentString.characters.index(componentString.characters.startIndex, offsetBy: 4))
         let text1 = searchString as NSString
-        let matchesColorsPattern = xcodeColorsPattern.matchesInString(searchString, options: .ReportProgress, range: NSMakeRange(0, searchString.characters.count))
+        let matchesColorsPattern = xcodeColorsPattern.matches(in: searchString, options: .reportProgress, range: NSMakeRange(0, searchString.characters.count))
         // es müssen 3 Farbkomponenten gefunden werden
         assert(matchesColorsPattern.count == 3)
-        let str_r = text1.substringWithRange(matchesColorsPattern[0].range)
-        let str_g = text1.substringWithRange(matchesColorsPattern[1].range)
-        let str_b = text1.substringWithRange(matchesColorsPattern[2].range)
+        let str_r = text1.substring(with: matchesColorsPattern[0].range)
+        let str_g = text1.substring(with: matchesColorsPattern[1].range)
+        let str_b = text1.substring(with: matchesColorsPattern[2].range)
         // wandle die Strings in Ints
         let r = CGFloat.init(Int(str_r)!)
         let g = CGFloat.init(Int(str_g)!)
@@ -213,49 +213,49 @@ class MyMutableAttributedString: NSMutableAttributedString {
         
     }
     
-    private var pattern: NSRegularExpression {
+    fileprivate var pattern: NSRegularExpression {
         // The second capture is either a file extension (default) or a function name (SwiftyBeaver format).
         // Callers should check for the presence of the third capture to detect if it is SwiftyBeaver or not.
         //
         // (If this gets any more complicated there will need to be a formal way to walk through multiple
         // patterns and check if each one matches.)
-        return try! NSRegularExpression(pattern: "([\\w\\+]+)\\.(\\w+)(\\(\\))?:(\\d+)", options: .CaseInsensitive)
+        return try! NSRegularExpression(pattern: "([\\w\\+]+)\\.(\\w+)(\\(\\))?:(\\d+)", options: .caseInsensitive)
     }
     
     
-    private var escapeSequencePattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[", options: .CaseInsensitive)
+    fileprivate var escapeSequencePattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[", options: .caseInsensitive)
     }
     
     
-    private var xcodeColorPrefixPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};\\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .CaseInsensitive)
+    fileprivate var xcodeColorPrefixPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};\\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .caseInsensitive)
     }
     
-    private var xcodeColorPrefixForegroundPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .CaseInsensitive)
+    fileprivate var xcodeColorPrefixForegroundPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .caseInsensitive)
     }
     
-    private var xcodeColorPrefixBackgroundPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .CaseInsensitive)
+    fileprivate var xcodeColorPrefixBackgroundPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};", options: .caseInsensitive)
     }
     
-    private var xcodeColorsPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "([0-9][0-9]{0,2})", options: .CaseInsensitive)
+    fileprivate var xcodeColorsPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "([0-9][0-9]{0,2})", options: .caseInsensitive)
     }
     
     
     
-    private var xcodeColorResetForegroundPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[fg;", options: .CaseInsensitive)
+    fileprivate var xcodeColorResetForegroundPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[fg;", options: .caseInsensitive)
     }
     
-    private var xcodeColorResetBackgroundPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[bg;", options: .CaseInsensitive)
+    fileprivate var xcodeColorResetBackgroundPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[bg;", options: .caseInsensitive)
     }
     
-    private var xcodeColorResetForeAndBackgroundPattern: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "\\x1b\\[;", options: .CaseInsensitive)
+    fileprivate var xcodeColorResetForeAndBackgroundPattern: NSRegularExpression {
+        return try! NSRegularExpression(pattern: "\\x1b\\[;", options: .caseInsensitive)
     }
 
     

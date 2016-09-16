@@ -17,12 +17,12 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = NSApplication.shared().delegate as! AppDelegate
         appDelegate.textViewController = self
 
     }
 
-    override var representedObject: AnyObject? {
+    override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
@@ -40,7 +40,7 @@ class ViewController: NSViewController {
         
     }
     
-    func outputLogLines(linesNumber linesNumber: Int, log: ActionLogger) {
+    func outputLogLines(linesNumber: Int, log: ActionLogger) {
         for i in 1 ... linesNumber {
             log.debug("\(i): this is a line for output \(i)")
         }
@@ -52,8 +52,8 @@ class ViewController: NSViewController {
 //        var s1 = MyMutableAttributedString()
 //        s1.appendAttributedString(NSMutableAttributedString(string: s))
         
-        string.fixAttributesInRange(NSRange.init(location: 0, length: string.length))
-        outputTextView.textStorage!.replaceCharactersInRange(NSRange.init(location: 0, length: string.length), withAttributedString: string)
+        string.fixAttributes(in: NSRange.init(location: 0, length: string.length))
+        outputTextView.textStorage!.replaceCharacters(in: NSRange.init(location: 0, length: string.length), with: string)
         
     }
     

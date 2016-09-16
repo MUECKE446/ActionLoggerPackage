@@ -17,11 +17,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var textViewController: ViewController?
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /// choose different levels of output in the bottom left of the console and watch the output in the console.
     /// also you can try the filter functions in the search field at the bottom of the console
     /// if you precede the search with a @ char, the search is interpreted as a regular expression
-    @IBAction func generateLineForEachLevel(sender: NSMenuItem) {
+    @IBAction func generateLineForEachLevel(_ sender: NSMenuItem) {
         generateLineForEachLevel()
         logger.logSetupValues()
         textViewController?.outputLogLines(linesNumber: 1000, log: logger)
@@ -49,13 +49,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         logger.severe("this is the line for level: Severe")
     }
 
-    @IBAction func generateOutputToTextViewInWindow(sender: NSMenuItem) {
+    @IBAction func generateOutputToTextViewInWindow(_ sender: NSMenuItem) {
         if let _ = textViewController {
             textViewController!.generateOutputToTextViewInWindow()
         }
     }
     
-    @IBAction func fixAttributesInTextView(sender: NSMenuItem) {
+    @IBAction func fixAttributesInTextView(_ sender: NSMenuItem) {
         if let _ = textViewController {
             textViewController!.fixAttributesInTextView()
         }
