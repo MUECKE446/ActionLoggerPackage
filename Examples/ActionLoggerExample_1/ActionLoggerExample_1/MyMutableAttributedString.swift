@@ -40,7 +40,10 @@ class MyMutableAttributedString: NSMutableAttributedString {
     }
     
 
-    required init?(pasteboardPropertyList propertyList: Any, ofType type: String) {
+    required init?(pasteboardPropertyList propertyList: Any, ofType type: NSPasteboard.PasteboardType) {
+// Local variable inserted by Swift 4.2 migrator.
+        _ = convertFromNSPasteboardPasteboardType(type)
+
         fatalError("init(pasteboardPropertyList:ofType:) has not been implemented")
     }
 
@@ -48,16 +51,21 @@ class MyMutableAttributedString: NSMutableAttributedString {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [String : Any] {
-        return (self._contents.attributes(at: location, effectiveRange: range))
+    override func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedString.Key : Any] {
+        let tmp = self._contents.attributes(at: location, effectiveRange: range)
+        let tmp1 = convertFromNSAttributedStringKeyDictionary(tmp)
+        return (tmp1)
     }
     
     override func replaceCharacters(in range: NSRange, with attrString: NSAttributedString) {
         self._contents.replaceCharacters(in: range, with: attrString)
     }
     
-    override func setAttributes(_ attrs: [String : Any]?, range: NSRange) {
-        self._contents.setAttributes(attrs, range: range)
+    override func setAttributes(_ attrs: [NSAttributedString.Key : Any]?, range: NSRange) {
+// Local variable inserted by Swift 4.2 migrator.
+let attrs = convertFromOptionalNSAttributedStringKeyDictionary(attrs)
+
+        self._contents.setAttributes(convertToOptionalNSAttributedStringKeyDictionary(attrs), range: range)
     }
     
     override func fixAttachmentAttribute(in range: NSRange) {
@@ -71,12 +79,12 @@ class MyMutableAttributedString: NSMutableAttributedString {
         let editedRange = NSRange.init(location: 0, length: self._contents.length)
         
         //var attrs = NSMutableDictionary(capacity: 2)
-        let attrs = NSMutableDictionary(objects: [NSColor.clear,NSColor.clear], forKeys: [NSBackgroundColorAttributeName as NSCopying,NSForegroundColorAttributeName as NSCopying])
-        attrs.removeObject(forKey: NSForegroundColorAttributeName)
-        attrs.removeObject(forKey: NSBackgroundColorAttributeName)
+        let attrs = NSMutableDictionary(objects: [NSColor.clear,NSColor.clear], forKeys: [convertFromNSAttributedStringKey(NSAttributedString.Key.backgroundColor) as NSCopying,convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) as NSCopying])
+        attrs.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor))
+        attrs.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.backgroundColor))
 
         // Attribute fürs unsichtbar machen
-        let clearAttrs = NSDictionary(objects: [NSFont.systemFont(ofSize: 0.001),NSColor.clear], forKeys: [NSFontAttributeName as NSCopying,NSForegroundColorAttributeName as NSCopying])
+        let clearAttrs = NSDictionary(objects: [NSFont.systemFont(ofSize: 0.001),NSColor.clear], forKeys: [convertFromNSAttributedStringKey(NSAttributedString.Key.font) as NSCopying,convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) as NSCopying])
 
         // finde alle ESCAPEs
         let matchesEscapeSequencesPattern = escapeSequencePattern.matches(in: string, options: .reportProgress, range: editedRange)
@@ -87,34 +95,34 @@ class MyMutableAttributedString: NSMutableAttributedString {
         let matchesColorPrefixForegroundPattern = xcodeColorPrefixForegroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesColorPrefixForegroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
-            self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(clearAttrs as! [String : AnyObject]), range: result.range)
         }
         
         // finde zunächst alle Sequenzen für die Hintergrundfarbe
         let matchesColorPrefixBackgroundPattern = xcodeColorPrefixBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesColorPrefixBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
-            self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(clearAttrs as! [String : AnyObject]), range: result.range)
         }
         
         let matchesResetForegroundPattern = xcodeColorResetForegroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetForegroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
-            self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(clearAttrs as! [String : AnyObject]), range: result.range)
 
         }
 
         let matchesResetBackgroundPattern = xcodeColorResetBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
-            self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(clearAttrs as! [String : AnyObject]), range: result.range)
 
         }
 
         let matchesResetForeAndBackgroundPattern = xcodeColorResetForeAndBackgroundPattern.matches(in: string, options: .reportProgress, range: editedRange)
         for result in matchesResetForeAndBackgroundPattern {
             // der Bereich dieser Sequenz wird unsichtbar gemacht
-            self.addAttributes(clearAttrs as! [String : AnyObject], range: result.range)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(clearAttrs as! [String : AnyObject]), range: result.range)
         }
         // hier müßte ich alle Esc Sequenzen zusammenhaben
     }
@@ -157,15 +165,15 @@ class MyMutableAttributedString: NSMutableAttributedString {
             if reset || reset_fg || reset_bg {
                 if reset {
                     // beide Attribute werden gelöscht
-                    colorAttributes.removeObject(forKey: NSForegroundColorAttributeName)
-                    colorAttributes.removeObject(forKey: NSBackgroundColorAttributeName)
+                    colorAttributes.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor))
+                    colorAttributes.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.backgroundColor))
                 }
                 else {
                     if reset_fg {
-                        colorAttributes.removeObject(forKey: NSForegroundColorAttributeName)
+                        colorAttributes.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor))
                     }
                     else {
-                        colorAttributes.removeObject(forKey: NSBackgroundColorAttributeName)
+                        colorAttributes.removeObject(forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.backgroundColor))
                     }
                 }
             }
@@ -180,24 +188,24 @@ class MyMutableAttributedString: NSMutableAttributedString {
                 if !matchesColorPrefixForegroundPattern.isEmpty {
                     // das ist die Sequenz: \\x1b\\[fg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};
                     let string1 = tmpStr.substring(with: matchesColorPrefixForegroundPattern[0].range)
-                    colorAttributes.setObject(getColor(components: string1), forKey: NSForegroundColorAttributeName as NSCopying)
+                    colorAttributes.setObject(getColor(components: string1), forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) as NSCopying)
                 }
                 else {
                     assert(!matchesColorPrefixBackgroundPattern.isEmpty)
                     // das ist die Sequenz: \\x1b\\[bg[0-9][0-9]{0,2},[0-9][0-9]{0,2},[0-9][0-9]{0,2};
                     let string1 = tmpStr.substring(with: matchesColorPrefixBackgroundPattern[0].range)
-                    colorAttributes.setObject(getColor(components: string1), forKey: NSBackgroundColorAttributeName as NSCopying)
+                    colorAttributes.setObject(getColor(components: string1), forKey: convertFromNSAttributedStringKey(NSAttributedString.Key.backgroundColor) as NSCopying)
                 }
             }
             // nun kann die Komponente mit den Farben versehen werden
-            self.addAttributes(colorAttributes as NSDictionary as! [String : AnyObject], range: r)
+            self.addAttributes(convertToNSAttributedStringKeyDictionary(colorAttributes as NSDictionary as! [String : AnyObject]), range: r)
         }
     }
     
     fileprivate func getColor(components componentString: String) -> NSColor {
-        let searchString = componentString.substring(from: componentString.characters.index(componentString.characters.startIndex, offsetBy: 4))
+        let searchString = componentString.substring(from: componentString.index(componentString.startIndex, offsetBy: 4))
         let text1 = searchString as NSString
-        let matchesColorsPattern = xcodeColorsPattern.matches(in: searchString, options: .reportProgress, range: NSMakeRange(0, searchString.characters.count))
+        let matchesColorsPattern = xcodeColorsPattern.matches(in: searchString, options: .reportProgress, range: NSMakeRange(0, searchString.count))
         // es müssen 3 Farbkomponenten gefunden werden
         assert(matchesColorsPattern.count == 3)
         let str_r = text1.substring(with: matchesColorsPattern[0].range)
@@ -259,4 +267,36 @@ class MyMutableAttributedString: NSMutableAttributedString {
     }
 
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSPasteboardPasteboardType(_ input: NSPasteboard.PasteboardType) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromOptionalNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]?) -> [String: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
