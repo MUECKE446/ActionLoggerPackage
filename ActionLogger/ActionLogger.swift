@@ -19,6 +19,8 @@
     
     Version 1.1.3:  error in Xcode 7.3 in function logSetupValues
 
+    Version 1.1.4:  changes for use with Swift 4
+
 */
 
 
@@ -157,7 +159,7 @@ open class ActionLogger : CustomDebugStringConvertible {
     open var ActionLoggerVersionY: Int {
         let scanner = Scanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
-//        scanner.scanInteger()!
+        _ = scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         return scanner.scanInteger()!
     }
@@ -166,9 +168,9 @@ open class ActionLogger : CustomDebugStringConvertible {
     open var ActionLoggerVersionZ: Int {
         let scanner = Scanner(string: constants.ActionLoggerVersion)
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
-//        scanner.scanInteger()!
+        _ = scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
-//        scanner.scanInteger()!
+        _ = scanner.scanInteger()!
         while let _ = scanner.scanUpToCharactersFromSet(integerCharSet) {}
         return scanner.scanInteger()!
     }
@@ -253,7 +255,7 @@ open class ActionLogger : CustomDebugStringConvertible {
     
     // MARK: - Properties
     /// the (unique) identifier for an ActionLogger object
-    open let identifier: String
+    public let identifier: String
     
     /// the current outputLogLevel for the ActionLogger object
     ///
@@ -381,7 +383,7 @@ open class ActionLogger : CustomDebugStringConvertible {
             }
             else {
                 // melde den Fehler
-                self.error("could not create ActionLogDestination for \(writeToFile)")
+                self.error("could not create ActionLogDestination for \(String(describing: writeToFile))")
             }
         }
         
@@ -545,7 +547,8 @@ open class ActionLogger : CustomDebugStringConvertible {
         for logDestination in logDestinations {
             //let typeLongName = _stdlib_getDemangledTypeName(logDestination)   // error since Xcode 7.3
             let typeLongName = String(describing: type(of: self))
-            let tokens = typeLongName.characters.split(whereSeparator: { $0 == "." }).map { String($0) }
+            let tokens = typeLongName.split(separator: ".")
+            //let tokens = typeLongName.characters.split(separator: { $0 == "." }).map { String($0) }
             let typeName = tokens.last!
             message += "\n" +
                 "Type of logDestination: \(typeName)\n" +
@@ -554,7 +557,7 @@ open class ActionLogger : CustomDebugStringConvertible {
                 "showFileName          : \(logDestination.showFileName)\n" +
                 "showLineNumber        : \(logDestination.showLineNumber)\n" +
                 "showFuncName          : \(logDestination.showFuncName)\n" +
-            "date & time format    : \(logDestination.dateFormatter.dateFormat)\n"
+            "date & time format    : \(String(describing: logDestination.dateFormatter.dateFormat))\n"
             
             if logDestination.hasFile() {
                 message +=
@@ -948,15 +951,15 @@ open class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomDeb
             #endif
             
             #if os(iOS)
-                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.allLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
             #endif
         }
     }
@@ -978,15 +981,15 @@ open class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomDeb
             #endif
             
             #if os(iOS)
-                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.allLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
             #endif
         }
     }
@@ -1015,7 +1018,7 @@ open class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomDeb
     // color enhancement
     open func isEnabledForColor() -> Bool {
         let dict = ProcessInfo.processInfo.environment
-        if let env = dict["XcodeColors"] as String! {
+        if let env = dict["XcodeColors"] as String? {
             return env == "YES"
         }
         return false
@@ -1028,7 +1031,7 @@ open class ActionLogConsoleDestination : ActionLogDestinationProtocol, CustomDeb
     // MARK: - DebugPrintable
     open var debugDescription: String {
         get {
-            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
+            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(String(describing: dateFormatter.dateFormat))"
         }
     }
     
@@ -1171,7 +1174,7 @@ open class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugS
         }
         
         if !openFile() {
-            ActionLogger.defaultLogger().error("unable to open file: \"\(writeToFileURL)\"")
+            ActionLogger.defaultLogger().error("unable to open file: \"\(String(describing: writeToFileURL))\"")
             return nil
         }
         closeFile()
@@ -1234,7 +1237,7 @@ open class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugS
                     logFileHandle = nil
                 }
                 if logFileHandle == nil {
-                    ActionLogger.defaultLogger().logLine("Attempt to open log file for writing failed: \(fileError?.localizedDescription)", logLevel: .error, withFileLineFunctionInfo: false)
+                    ActionLogger.defaultLogger().logLine("Attempt to open log file for writing failed: \(String(describing: fileError?.localizedDescription))", logLevel: .error, withFileLineFunctionInfo: false)
                     return false
                 }
                 else {
@@ -1261,7 +1264,7 @@ open class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugS
                     logFileHandle = nil
                 }
                 if logFileHandle == nil {
-                    ActionLogger.defaultLogger().logLine("Attempt to open log file for writing failed: \(fileError?.localizedDescription)", logLevel: .error, withFileLineFunctionInfo: false)
+                    ActionLogger.defaultLogger().logLine("Attempt to open log file for writing failed: \(String(describing: fileError?.localizedDescription))", logLevel: .error, withFileLineFunctionInfo: false)
                     return false
                 }
                 else {
@@ -1282,7 +1285,7 @@ open class ActionLogFileDestination : ActionLogDestinationProtocol, CustomDebugS
     // MARK: - DebugPrintable
     open var debugDescription: String {
         get {
-            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
+            return "ActionLogFileDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(String(describing: dateFormatter.dateFormat))"
         }
     }
 }
@@ -1298,8 +1301,8 @@ struct ActionLogTextViewColorProfile {
     #endif
     
     #if os(iOS)
-    var foregroundColor: UIColor = UIColor.blackColor()
-    var backgroundColor: UIColor = UIColor.whiteColor()
+    var foregroundColor: UIColor = UIColor.black
+    var backgroundColor: UIColor = UIColor.white
     #endif
     
     #if os(OSX)
@@ -1376,15 +1379,15 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
         // setting default color values
     
         #if os(iOS)
-        self.colorProfiles[.AllLevels]    = ActionLogTextViewColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.MessageOnly]  = ActionLogTextViewColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Comment]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Verbose]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Info]         = ActionLogTextViewColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Debug]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Warning]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Error]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-        self.colorProfiles[.Severe]       = ActionLogTextViewColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+        self.colorProfiles[.allLevels]    = ActionLogTextViewColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+        self.colorProfiles[.messageOnly]  = ActionLogTextViewColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+        self.colorProfiles[.comment]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+        self.colorProfiles[.verbose]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+        self.colorProfiles[.info]         = ActionLogTextViewColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+        self.colorProfiles[.debug]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+        self.colorProfiles[.warning]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+        self.colorProfiles[.error]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+        self.colorProfiles[.severe]       = ActionLogTextViewColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
         #endif
         }
     }
@@ -1411,15 +1414,15 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
             #endif
             
             #if os(iOS)
-                self.colorProfiles[.AllLevels]    = ActionLogTextViewColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.MessageOnly]  = ActionLogTextViewColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Comment]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Verbose]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Info]         = ActionLogTextViewColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Debug]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Warning]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Error]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Severe]       = ActionLogTextViewColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.allLevels]    = ActionLogTextViewColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogTextViewColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.comment]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.verbose]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.info]         = ActionLogTextViewColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.debug]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.warning]      = ActionLogTextViewColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.error]        = ActionLogTextViewColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.severe]       = ActionLogTextViewColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
             #endif
         }
     }
@@ -1433,8 +1436,8 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
         // color enhancement
         if let cp = self.colorProfiles[logDetails.logLevel] {
             // set fore- and backgroundColor
-            textViewMessage.addAttribute(NSForegroundColorAttributeName, value: cp.foregroundColor, range: messageRange)
-            textViewMessage.addAttribute(NSBackgroundColorAttributeName, value: cp.backgroundColor, range: messageRange)
+            textViewMessage.addAttribute(NSAttributedString.Key.foregroundColor, value: cp.foregroundColor, range: messageRange)
+            textViewMessage.addAttribute(NSAttributedString.Key.backgroundColor, value: cp.backgroundColor, range: messageRange)
         }
         
         // print it, only if the LogDestination should print this
@@ -1444,7 +1447,7 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
             #endif
 
             #if os(iOS)
-                textView.textStorage.appendAttributedString(textViewMessage)
+                textView.textStorage.append(textViewMessage)
             #endif
         }
     }
@@ -1467,7 +1470,7 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
     // MARK: - DebugPrintable
     open var debugDescription: String {
         get {
-            return "ActionLogTextViewDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
+            return "ActionLogTextViewDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(String(describing: dateFormatter.dateFormat))"
         }
     }
     
@@ -1479,14 +1482,14 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
                 cp.foregroundColor = NSColor(ciColor: fg_color)
             #endif
             #if os(iOS)
-                cp.foregroundColor = UIColor(CIColor: fg_color)
+                cp.foregroundColor = UIColor(ciColor: fg_color)
             #endif
             let bg_color = CIColor(red: CGFloat(bg_red)/255.0, green: CGFloat(bg_green)/255.0, blue: CGFloat(bg_blue)/255.0)
             #if os(OSX)
                 cp.backgroundColor = NSColor(ciColor: bg_color)
             #endif
             #if os(iOS)
-                cp.backgroundColor = UIColor(CIColor: bg_color)
+                cp.backgroundColor = UIColor(ciColor: bg_color)
             #endif
             self.colorProfiles[logLevel] = cp
         }
@@ -1501,8 +1504,8 @@ open class ActionLogTextViewDestination : ActionLogDestinationProtocol, CustomDe
             #endif
             
             #if os(iOS)
-                colorProfile.foregroundColor = UIColor.blackColor()
-                colorProfile.backgroundColor = UIColor.whiteColor()
+                colorProfile.foregroundColor = UIColor.black
+                colorProfile.backgroundColor = UIColor.white
             #endif
             
             self.colorProfiles[logLevel] = colorProfile
@@ -1550,6 +1553,10 @@ open class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProt
     open var textView: NSTextView
     #endif
     
+    #if os(iOS)
+    open var textView: UITextView
+    #endif
+    
     //    var owner: ActionLogger
     open var identifier: String
     
@@ -1564,7 +1571,7 @@ open class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProt
     // color enhancement
     var colorProfiles = Dictionary<ActionLogger.LogLevel,ActionLogXcodeColorProfile>()
     
-    
+#if os(OSX)
     init(identifier: String = "", textView: NSTextView) {
             self.identifier = identifier
             self.textView = textView
@@ -1585,19 +1592,56 @@ open class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProt
             #endif
             
             #if os(iOS)
-                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
             #endif
         }
     }
-    
+#endif
+
+#if os(iOS)
+    init(identifier: String = "", textView: UITextView) {
+        self.identifier = identifier
+        self.textView = textView
+        
+        // color enhancement
+        if isEnabledForColor() {
+            // setting default color values
+            #if os(OSX)
+                self.colorProfiles[.allLevels]    = ActionLogXcodeColorProfile(foregroundColor: NSColor.white,backgroundColor: NSColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogXcodeColorProfile(foregroundColor: NSColor.lightGray,backgroundColor: NSColor.white)
+                self.colorProfiles[.comment]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.gray,backgroundColor: NSColor.white)
+                self.colorProfiles[.verbose]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.darkGray,backgroundColor: NSColor.white)
+                self.colorProfiles[.info]         = ActionLogXcodeColorProfile(foregroundColor: NSColor.blue,backgroundColor: NSColor.white)
+                self.colorProfiles[.debug]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.green,backgroundColor: NSColor.white)
+                self.colorProfiles[.warning]      = ActionLogXcodeColorProfile(foregroundColor: NSColor.orange,backgroundColor: NSColor.white)
+                self.colorProfiles[.error]        = ActionLogXcodeColorProfile(foregroundColor: NSColor.red,backgroundColor: NSColor.white)
+                self.colorProfiles[.severe]       = ActionLogXcodeColorProfile(foregroundColor: NSColor.magenta,backgroundColor: NSColor.white)
+            #endif
+            
+            #if os(iOS)
+                self.colorProfiles[.allLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
+            #endif
+        }
+    }
+#endif
+
+
     open func setDefaultLogLevelColors() {
         // color enhancement
         if isEnabledForColor() {
@@ -1615,15 +1659,15 @@ open class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProt
             #endif
             
             #if os(iOS)
-                self.colorProfiles[.AllLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.whiteColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.MessageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.grayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGrayColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blueColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.greenColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orangeColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.redColor(),backgroundColor: UIColor.whiteColor())
-                self.colorProfiles[.Severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magentaColor(),backgroundColor: UIColor.whiteColor())
+                self.colorProfiles[.allLevels]    = ActionLogXcodeColorProfile(foregroundColor: UIColor.white,backgroundColor: UIColor.white)
+                self.colorProfiles[.messageOnly]  = ActionLogXcodeColorProfile(foregroundColor: UIColor.lightGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.comment]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.gray,backgroundColor: UIColor.white)
+                self.colorProfiles[.verbose]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.darkGray,backgroundColor: UIColor.white)
+                self.colorProfiles[.info]         = ActionLogXcodeColorProfile(foregroundColor: UIColor.blue,backgroundColor: UIColor.white)
+                self.colorProfiles[.debug]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.green,backgroundColor: UIColor.white)
+                self.colorProfiles[.warning]      = ActionLogXcodeColorProfile(foregroundColor: UIColor.orange,backgroundColor: UIColor.white)
+                self.colorProfiles[.error]        = ActionLogXcodeColorProfile(foregroundColor: UIColor.red,backgroundColor: UIColor.white)
+                self.colorProfiles[.severe]       = ActionLogXcodeColorProfile(foregroundColor: UIColor.magenta,backgroundColor: UIColor.white)
             #endif
         }
     }
@@ -1672,7 +1716,7 @@ open class ActionLogXcodeConsoleSimulationDestination : ActionLogDestinationProt
     // MARK: - DebugPrintable
     open var debugDescription: String {
         get {
-            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(dateFormatter.dateFormat)"
+            return "ActionLogConsoleDestination: \(identifier) - LogLevel: \(outputLogLevel.description()) showLogLevel: \(showLogLevel) showFileName: \(showFileName) showLineNumber: \(showLineNumber) date & time format: \(String(describing: dateFormatter.dateFormat))"
         }
     }
     
@@ -1784,7 +1828,7 @@ extension Scanner {
     func scanUpToCharactersFromSet(_ set: CharacterSet) -> String? {
         var value: NSString? = ""
         if scanUpToCharacters(from: set, into: &value),
-            let value = value as? String {
+            let value = value as String? {
                 return value
         }
         return nil
