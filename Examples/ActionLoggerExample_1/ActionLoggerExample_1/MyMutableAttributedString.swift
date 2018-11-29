@@ -203,7 +203,9 @@ let attrs = convertFromOptionalNSAttributedStringKeyDictionary(attrs)
     }
     
     fileprivate func getColor(components componentString: String) -> NSColor {
-        let searchString = componentString.substring(from: componentString.index(componentString.startIndex, offsetBy: 4))
+        // before swift 4.2
+        //let searchString = componentString.substring(from: componentString.index(componentString.startIndex, offsetBy: 4))
+        let searchString = String(componentString[componentString.index(componentString.startIndex, offsetBy: 4)...])
         let text1 = searchString as NSString
         let matchesColorsPattern = xcodeColorsPattern.matches(in: searchString, options: .reportProgress, range: NSMakeRange(0, searchString.count))
         // es müssen 3 Farbkomponenten gefunden werden
